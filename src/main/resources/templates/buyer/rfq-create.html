@@ -20,7 +20,7 @@
                             <div class="col-md-6">
                                 <label class="form-label small fw-semibold">Service Category *</label>
                                 <select th:field="*{categoryId}" class="form-select" required>
-                                    <option value="">Select Service Category</option>
+                                    <option value="" disabled selected>-- Select Service Category --</option>
                                     <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Dyeing</option>
                                 </select>
                                 <div class="text-danger small" th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></div>
@@ -45,10 +45,10 @@
                             <div class="col-md-4">
                                 <label class="form-label small fw-semibold">Unit of Measure *</label>
                                 <select th:field="*{unitOfMeasure}" class="form-select" required>
-                                    <option value="METERS">METERS</option>
-                                    <option value="KILOGRAMS">KILOGRAMS</option>
-                                    <option value="PIECES">PIECES</option>
-                                    <option value="BATCHES">BATCHES</option>
+                                    <option value="METERS">Meters (Linear Fabric)</option>
+                                    <option value="KILOGRAMS">Kilograms (Yarn / Knits)</option>
+                                    <option value="PIECES">Pieces (Stitched Garments)</option>
+                                    <option value="BATCHES">Batches (Fixed Lot Size)</option>
                                 </select>
                             </div>
                             <div class="col-md-4">

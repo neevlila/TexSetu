@@ -66,6 +66,143 @@ body {
     color: #ffffff !important;
 }
 
+/* Account Selection Cards (Registration) */
+.account-type-card {
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.account-type-card:hover {
+    border-color: var(--teal-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px -2px rgba(15, 118, 110, 0.12);
+}
+
+.btn-check:checked + .account-type-card {
+    border-color: var(--teal-primary) !important;
+    background-color: #f0fdfa !important;
+    box-shadow: 0 4px 14px rgba(15, 118, 110, 0.18) !important;
+}
+
+.btn-check:checked + .account-type-card .selected-check {
+    display: inline-block !important;
+}
+
+/* Polished Form Inputs & Select Dropdowns */
+.form-select, .form-control {
+    border-radius: 8px;
+    border: 1.5px solid #cbd5e1;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1e293b;
+    background-color: #ffffff;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select:hover, .form-control:hover {
+    border-color: #94a3b8;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: var(--teal-primary);
+    box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.2);
+    outline: none;
+}
+
+.form-select option {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    background-color: #ffffff;
+}
+
+/* Dark Theme Overrides */
+[data-bs-theme="dark"] body {
+    background-color: #0b1120 !important;
+    color: #e2e8f0;
+}
+
+[data-bs-theme="dark"] .bg-light {
+    background-color: #0b1120 !important;
+}
+
+[data-bs-theme="dark"] .bg-white {
+    background-color: #1e293b !important;
+}
+
+[data-bs-theme="dark"] .card {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #f1f5f9;
+}
+
+[data-bs-theme="dark"] .card-header {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .metric-card {
+    background-color: #1e293b;
+    border-color: #334155;
+}
+
+[data-bs-theme="dark"] .text-navy {
+    color: #38bdf8 !important;
+}
+
+[data-bs-theme="dark"] .category-icon-box {
+    background-color: #134e4a;
+    color: #2dd4bf;
+    box-shadow: 0 2px 4px rgba(45, 212, 191, 0.15);
+}
+
+[data-bs-theme="dark"] .account-type-card {
+    border-color: #334155;
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .btn-check:checked + .account-type-card {
+    border-color: #2dd4bf !important;
+    background-color: #112d2b !important;
+    box-shadow: 0 4px 14px rgba(45, 212, 191, 0.25) !important;
+}
+
+[data-bs-theme="dark"] .form-select, 
+[data-bs-theme="dark"] .form-control {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .form-select:hover, 
+[data-bs-theme="dark"] .form-control:hover {
+    border-color: #475569;
+}
+
+[data-bs-theme="dark"] .form-select:focus, 
+[data-bs-theme="dark"] .form-control:focus {
+    border-color: #2dd4bf;
+    box-shadow: 0 0 0 0.25rem rgba(45, 212, 191, 0.25);
+}
+
+[data-bs-theme="dark"] .form-select option {
+    background-color: #1e293b;
+    color: #f8fafc;
+}
+
+[data-bs-theme="dark"] .table {
+    --bs-table-bg: #1e293b;
+    --bs-table-color: #e2e8f0;
+    --bs-table-border-color: #334155;
+}
+
 /* Card & Container Aesthetics */
 .card {
     border-color: var(--card-border);

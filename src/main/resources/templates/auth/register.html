@@ -22,16 +22,22 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <input type="radio" class="btn-check" name="role" id="roleBuyer" value="BUYER" th:field="*{role}" onchange="toggleWorkerFields()">
-                                    <label class="btn btn-outline-secondary w-100 p-3 text-start" for="roleBuyer">
-                                        <div class="fw-bold fs-6"><i class="bi bi-cart-check me-2 text-primary"></i> Textile Buyer / Trader</div>
-                                        <small class="text-secondary d-block mt-1">Clothing brand, fabric trader, or manufacturer seeking job-work units.</small>
+                                    <label class="account-type-card w-100 p-3 text-start d-block" for="roleBuyer">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-bold fs-6"><i class="bi bi-cart-check me-2 text-primary"></i> Textile Buyer / Trader</span>
+                                            <span class="selected-check text-teal d-none"><i class="bi bi-check-circle-fill fs-5"></i></span>
+                                        </div>
+                                        <small class="text-secondary d-block">Clothing brand, fabric trader, or manufacturer seeking job-work units.</small>
                                     </label>
                                 </div>
                                 <div class="col-md-6">
                                     <input type="radio" class="btn-check" name="role" id="roleWorker" value="JOB_WORKER" th:field="*{role}" onchange="toggleWorkerFields()">
-                                    <label class="btn btn-outline-secondary w-100 p-3 text-start" for="roleWorker">
-                                        <div class="fw-bold fs-6"><i class="bi bi-tools me-2 text-success"></i> Job-Work Service Unit</div>
-                                        <small class="text-secondary d-block mt-1">Dyeing mill, printing unit, embroidery house, or stitching workshop.</small>
+                                    <label class="account-type-card w-100 p-3 text-start d-block" for="roleWorker">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-bold fs-6"><i class="bi bi-tools me-2 text-success"></i> Job-Work Service Unit</span>
+                                            <span class="selected-check text-teal d-none"><i class="bi bi-check-circle-fill fs-5"></i></span>
+                                        </div>
+                                        <small class="text-secondary d-block">Dyeing mill, printing unit, embroidery house, or stitching workshop.</small>
                                     </label>
                                 </div>
                             </div>
