@@ -4,23 +4,21 @@
 # ==============================================================================
 
 # STAGE 1: BUILD
-FROM eclipse-temurin:21-jdk-jammy AS builder
+FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /app
 
-# Copy Maven Wrapper & Project Descriptor
+# Copy Project Descriptor & Maven Configuration
 COPY pom.xml .
-COPY mvnw .
 COPY .mvn .mvn
 
-# Make wrapper executable & cache dependencies
-RUN chmod +x ./mvnw || true
-RUN ./mvnw dependency:go-offline -B || true
+# Cache dependencies
+RUN mvn dependency:go-offline -B || true
 
 # Copy Source Code
 COPY src ./src
 
 # Package Production Jar without running unit tests during docker build (tests run in CI)
-RUN ./mvnw clean package -DskipTests -B
+RUN mvn clean package -DskipTests -B
 
 # STAGE 2: RUNTIME CONTAINER
 FROM eclipse-temurin:21-jre-jammy
