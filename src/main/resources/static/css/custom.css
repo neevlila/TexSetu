@@ -262,32 +262,58 @@ select:focus, .form-select:focus, input:focus, .form-control:focus {
     box-shadow: 0 0 0 2px #ea580c;
 }
 
-/* Hero Section - Perfectly fills the screen below navbar */
+/* Top Navbar sizing */
+.navbar {
+    min-height: 58px;
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+}
+
+/* Hero Section - Perfectly fills the screen below navbar with zero overflow */
 .hero-banner {
     background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
     color: #ffffff;
-    min-height: calc(100vh - 68px);
+    height: calc(100vh - 58px);
+    min-height: calc(100vh - 58px);
+    max-height: calc(100vh - 58px);
     display: flex;
     align-items: center;
-    padding: 2.5rem 0;
+    padding: 1rem 0;
     border-bottom: 3px solid var(--teal-primary);
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .hero-banner .container-fluid {
     width: 100%;
 }
 
-@media (max-width: 1400px) {
-    .hero-banner h1.display-4 {
-        font-size: 2.65rem;
-    }
+.hero-banner h1.display-4 {
+    font-size: calc(1.4rem + 1.6vw);
+    line-height: 1.18;
+    margin-bottom: 0.85rem !important;
+}
+
+.hero-banner .lead {
+    font-size: 1.05rem;
+    line-height: 1.45;
+    margin-bottom: 1.25rem !important;
+}
+
+.hero-banner .hero-passport-card {
+    padding: 1.25rem !important;
 }
 
 @media (max-width: 992px) {
-    .hero-banner {
+    .navbar {
         min-height: auto;
-        padding: 3.5rem 0;
+    }
+    .hero-banner {
+        height: auto;
+        min-height: auto;
+        max-height: none;
+        overflow: visible;
+        padding: 3rem 0;
     }
 }
 
