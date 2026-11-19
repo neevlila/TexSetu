@@ -14,10 +14,10 @@
                 <small class="text-secondary"><i class="bi bi-geo-alt-fill text-teal me-1"></i> <span th:text="${worker.address} + ', ' + ${worker.city}">Surat</span></small>
             </div>
             <div>
-                <span class="badge bg-success p-2" th:if="${worker.verificationStatus.name() == 'VERIFIED'}">
+                <span class="badge bg-success p-2" th:if="${worker.verificationStatus != null and worker.verificationStatus.name() == 'VERIFIED'}">
                     <i class="bi bi-patch-check-fill me-1"></i> Verified Unit
                 </span>
-                <span class="badge bg-secondary p-2" th:if="${worker.verificationStatus.name() == 'PENDING'}">
+                <span class="badge bg-secondary p-2" th:if="${worker.verificationStatus != null and worker.verificationStatus.name() == 'PENDING'}">
                     <i class="bi bi-hourglass me-1"></i> Pending Verification
                 </span>
                 <a th:href="@{/job-worker/profile}" class="btn btn-outline-secondary btn-sm ms-2"><i class="bi bi-gear me-1"></i> Unit Profile</a>
@@ -50,7 +50,7 @@
             <div class="col-md-3">
                 <div class="metric-card">
                     <span class="text-secondary small fw-semibold">INDICATIVE DAILY CAPACITY</span>
-                    <h3 class="fw-bold text-navy mt-1 mb-0"><span th:text="${#numbers.formatDecimal(worker.indicativeCapacityMetersPerDay, 0, 'COMMA', 0, 'POINT')}">10,000</span> <span class="fs-6 fw-normal">Mts/Day</span></h3>
+                    <h3 class="fw-bold text-navy mt-1 mb-0"><span th:text="${worker.indicativeCapacityMetersPerDay != null ? #numbers.formatDecimal(worker.indicativeCapacityMetersPerDay, 0, 'COMMA', 0, 'POINT') : '0'}">10,000</span> <span class="fs-6 fw-normal">Mts/Day</span></h3>
                     <div class="mt-2 small text-muted">Turnaround: <span th:text="${worker.turnaroundDays}">3</span> Days</div>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                             <td class="fw-bold font-monospace" th:text="${q.quoteNumber}">QUO-123</td>
                             <td th:text="${q.rfq.rfqNumber}">RFQ-123</td>
                             <td class="fw-semibold text-teal">₹<span th:text="${q.unitPrice}">0.00</span> / <span th:text="${q.rfq.unitOfMeasure}">MTS</span></td>
-                            <td class="fw-bold">₹<span th:text="${#numbers.formatDecimal(q.totalPrice, 0, 'COMMA', 2, 'POINT')}">0.00</span></td>
+                            <td class="fw-bold">₹<span th:text="${q.totalPrice != null ? #numbers.formatDecimal(q.totalPrice, 0, 'COMMA', 2, 'POINT') : '0.00'}">0.00</span></td>
                             <td th:text="${#temporals.format(q.proposedCompletionDate, 'dd MMM yyyy')}">Date</td>
                             <td th:text="${#temporals.format(q.validityDate, 'dd MMM yyyy')}">Date</td>
                             <td>

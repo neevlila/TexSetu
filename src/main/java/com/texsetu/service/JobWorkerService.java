@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -48,6 +49,11 @@ public class JobWorkerService {
     @Transactional(readOnly = true)
     public Optional<JobWorkerProfile> getProfileById(Long id) {
         return jobWorkerProfileRepository.findById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<JobWorkerProfile> getAllWorkers() {
+        return jobWorkerProfileRepository.findAll();
     }
 
     @Transactional(readOnly = true)

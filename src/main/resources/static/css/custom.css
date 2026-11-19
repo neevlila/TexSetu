@@ -1,4 +1,10 @@
-/* TexSetu Custom B2B Industrial Styling */
+/* ==============================================================================
+   TexSetu Custom B2B Industrial Styling & Theme Engine
+   Primary: Deep Industrial Navy (#0f172a)
+   Secondary: Deep Slate (#1e293b)
+   Accent: Vibrant Teal (#0f766e) & Mint (#2dd4bf)
+   ============================================================================== */
+
 :root {
     --navy-primary: #0f172a;
     --navy-secondary: #1e293b;
@@ -49,6 +55,11 @@ body {
     color: var(--teal-primary) !important;
 }
 
+.hover-white:hover {
+    color: #ffffff !important;
+}
+
+/* Category Icon Display */
 .category-icon-box {
     display: inline-flex;
     align-items: center;
@@ -62,8 +73,33 @@ body {
     box-shadow: 0 2px 4px rgba(15, 118, 110, 0.12);
 }
 
-.hover-white:hover {
-    color: #ffffff !important;
+/* Header Theme Toggle Button */
+.btn-theme-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+.btn-theme-toggle:focus,
+.btn-theme-toggle:active {
+    outline: none !important;
+    box-shadow: 0 0 0 2px var(--teal-primary) !important;
+    background-color: rgba(255, 255, 255, 0.18) !important;
 }
 
 /* Account Selection Cards (Registration) */
@@ -92,8 +128,9 @@ body {
     display: inline-block !important;
 }
 
-/* Polished Form Inputs & Select Dropdowns */
-.form-select, .form-control {
+/* Form Inputs & Select Elements */
+select, .form-select, input, .form-control {
+    color-scheme: light;
     border-radius: 8px;
     border: 1.5px solid #cbd5e1;
     padding: 0.625rem 0.875rem;
@@ -104,11 +141,11 @@ body {
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.form-select:hover, .form-control:hover {
+select:hover, .form-select:hover, input:hover, .form-control:hover {
     border-color: #94a3b8;
 }
 
-.form-select:focus, .form-control:focus {
+select:focus, .form-select:focus, input:focus, .form-control:focus {
     border-color: var(--teal-primary);
     box-shadow: 0 0 0 0.25rem rgba(15, 118, 110, 0.2);
     outline: none;
@@ -121,92 +158,34 @@ body {
     background-color: #ffffff;
 }
 
-/* Dark Theme Overrides */
-[data-bs-theme="dark"] body {
-    background-color: #0b1120 !important;
-    color: #e2e8f0;
-}
-
-[data-bs-theme="dark"] .bg-light {
-    background-color: #0b1120 !important;
-}
-
-[data-bs-theme="dark"] .bg-white {
-    background-color: #1e293b !important;
-}
-
-[data-bs-theme="dark"] .card {
-    background-color: #1e293b;
-    border-color: #334155;
-    color: #f1f5f9;
-}
-
-[data-bs-theme="dark"] .card-header {
-    background-color: #1e293b;
-    border-color: #334155;
-    color: #f8fafc;
-}
-
-[data-bs-theme="dark"] .metric-card {
-    background-color: #1e293b;
-    border-color: #334155;
-}
-
-[data-bs-theme="dark"] .text-navy {
-    color: #38bdf8 !important;
-}
-
-[data-bs-theme="dark"] .category-icon-box {
-    background-color: #134e4a;
-    color: #2dd4bf;
-    box-shadow: 0 2px 4px rgba(45, 212, 191, 0.15);
-}
-
-[data-bs-theme="dark"] .account-type-card {
-    border-color: #334155;
-    background-color: #1e293b;
-    color: #f8fafc;
-}
-
-[data-bs-theme="dark"] .btn-check:checked + .account-type-card {
-    border-color: #2dd4bf !important;
-    background-color: #112d2b !important;
-    box-shadow: 0 4px 14px rgba(45, 212, 191, 0.25) !important;
-}
-
-[data-bs-theme="dark"] .form-select, 
-[data-bs-theme="dark"] .form-control {
-    background-color: #0f172a;
-    border-color: #334155;
-    color: #f8fafc;
-}
-
-[data-bs-theme="dark"] .form-select:hover, 
-[data-bs-theme="dark"] .form-control:hover {
-    border-color: #475569;
-}
-
-[data-bs-theme="dark"] .form-select:focus, 
-[data-bs-theme="dark"] .form-control:focus {
-    border-color: #2dd4bf;
-    box-shadow: 0 0 0 0.25rem rgba(45, 212, 191, 0.25);
-}
-
-[data-bs-theme="dark"] .form-select option {
-    background-color: #1e293b;
-    color: #f8fafc;
-}
-
-[data-bs-theme="dark"] .table {
-    --bs-table-bg: #1e293b;
-    --bs-table-color: #e2e8f0;
-    --bs-table-border-color: #334155;
-}
-
-/* Card & Container Aesthetics */
+/* Card & Container Base Aesthetics */
 .card {
     border-color: var(--card-border);
     border-radius: 0.5rem;
+    background-color: #ffffff;
+}
+
+/* Hero Section Digital Lot Passport Card */
+.hero-passport-card {
+    background: #111d33 !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 12px;
+    color: #ffffff !important;
+}
+
+.hero-passport-inner {
+    background: #090e1a !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-bs-theme="dark"] .hero-passport-card {
+    background: #0f172a !important;
+    border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .hero-passport-inner {
+    background: #020617 !important;
+    border-color: #1e293b !important;
 }
 
 .card-header {
@@ -300,4 +279,189 @@ body {
 .compare-best-price {
     background-color: #f0fdf4 !important;
     border-left: 3px solid #22c55e !important;
+}
+
+/* ==============================================================================
+   DARK THEME SPECIFIC OVERRIDES [data-bs-theme="dark"]
+   Ensures complete dark styling across all cards, headers, tables, & dropdowns
+   ============================================================================== */
+
+[data-bs-theme="dark"] body {
+    background-color: #0b1120 !important;
+    color: #e2e8f0 !important;
+}
+
+[data-bs-theme="dark"] .bg-light {
+    background-color: #0b1120 !important;
+}
+
+[data-bs-theme="dark"] .bg-white {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+}
+
+[data-bs-theme="dark"] .card {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+[data-bs-theme="dark"] .card-header,
+[data-bs-theme="dark"] .card-header.bg-white {
+    background-color: #1e293b !important;
+    border-bottom-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] .metric-card {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .text-navy {
+    color: #38bdf8 !important;
+}
+
+[data-bs-theme="dark"] .text-secondary {
+    color: #94a3b8 !important;
+}
+
+[data-bs-theme="dark"] .text-muted {
+    color: #94a3b8 !important;
+}
+
+/* Dark Mode Table Enhancements (Removes stark white table-light header) */
+[data-bs-theme="dark"] .table-light,
+[data-bs-theme="dark"] .table thead.table-light,
+[data-bs-theme="dark"] .table thead th {
+    background-color: #0f172a !important;
+    color: #94a3b8 !important;
+    border-color: #334155 !important;
+    font-weight: 600;
+}
+
+[data-bs-theme="dark"] .table {
+    --bs-table-bg: #1e293b;
+    --bs-table-color: #f1f5f9;
+    --bs-table-border-color: #334155;
+    --bs-table-hover-bg: #2d3748;
+    color: #f1f5f9 !important;
+}
+
+[data-bs-theme="dark"] .table tbody tr td {
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .table-hover > tbody > tr:hover > * {
+    --bs-table-hover-bg: #2d3748 !important;
+    color: #ffffff !important;
+}
+
+/* Dark Mode Category Icon Box */
+[data-bs-theme="dark"] .category-icon-box {
+    background-color: #134e4a !important;
+    color: #2dd4bf !important;
+    box-shadow: 0 2px 4px rgba(45, 212, 191, 0.15) !important;
+}
+
+/* Dark Mode Account Type Card */
+[data-bs-theme="dark"] .account-type-card {
+    border-color: #334155 !important;
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] .btn-check:checked + .account-type-card {
+    border-color: #2dd4bf !important;
+    background-color: #112d2b !important;
+    box-shadow: 0 4px 14px rgba(45, 212, 191, 0.25) !important;
+}
+
+/* Dark Mode Select & Option Menus (Enforces native dark popup in OS/browser) */
+[data-bs-theme="dark"] select,
+[data-bs-theme="dark"] .form-select,
+[data-bs-theme="dark"] input,
+[data-bs-theme="dark"] .form-control {
+    color-scheme: dark !important;
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] select:hover,
+[data-bs-theme="dark"] .form-select:hover,
+[data-bs-theme="dark"] input:hover,
+[data-bs-theme="dark"] .form-control:hover {
+    border-color: #475569 !important;
+}
+
+[data-bs-theme="dark"] select:focus,
+[data-bs-theme="dark"] .form-select:focus,
+[data-bs-theme="dark"] input:focus,
+[data-bs-theme="dark"] .form-control:focus {
+    border-color: #2dd4bf !important;
+    box-shadow: 0 0 0 0.25rem rgba(45, 212, 191, 0.25) !important;
+}
+
+[data-bs-theme="dark"] select option,
+[data-bs-theme="dark"] .form-select option {
+    background-color: #0f172a !important;
+    color: #f8fafc !important;
+    padding: 10px 14px;
+}
+
+/* Dark Mode Buttons */
+[data-bs-theme="dark"] .btn-outline-dark,
+[data-bs-theme="dark"] .btn-outline-secondary {
+    color: #e2e8f0 !important;
+    border-color: #64748b !important;
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-dark:hover,
+[data-bs-theme="dark"] .btn-outline-secondary:hover {
+    background-color: #334155 !important;
+    border-color: #94a3b8 !important;
+    color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-teal {
+    color: #2dd4bf !important;
+    border-color: #2dd4bf !important;
+}
+
+[data-bs-theme="dark"] .btn-outline-teal:hover {
+    background-color: #0f766e !important;
+    border-color: #0f766e !important;
+    color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .demo-login-btn {
+    background-color: #1e293b !important;
+    border-color: #475569 !important;
+    color: #f8fafc !important;
+}
+
+[data-bs-theme="dark"] .demo-login-btn:hover {
+    background-color: #334155 !important;
+    color: #ffffff !important;
+}
+
+[data-bs-theme="dark"] .input-group-text {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    color: #94a3b8 !important;
+}
+
+[data-bs-theme="dark"] .modal-content {
+    background-color: #1e293b !important;
+    color: #f1f5f9 !important;
+    border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .border,
+[data-bs-theme="dark"] .border-bottom,
+[data-bs-theme="dark"] .border-top {
+    border-color: #334155 !important;
 }
