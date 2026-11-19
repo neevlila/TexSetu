@@ -49,6 +49,19 @@ body {
     color: var(--teal-primary) !important;
 }
 
+.category-icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background-color: #e0f2f1;
+    color: #0f766e;
+    font-size: 1.75rem;
+    box-shadow: 0 2px 4px rgba(15, 118, 110, 0.12);
+}
+
 .hover-white:hover {
     color: #ffffff !important;
 }

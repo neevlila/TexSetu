@@ -47,22 +47,22 @@
                     </li>
 
                     <!-- Buyer Links -->
-                    <li class="nav-item me-2" sec:authorize="hasRole('BUYER')">
-                        <a class="nav-link" th:href="@{/buyer/dashboard}"><i class="bi bi-speedometer2 me-1"></i> Dashboard</a>
+                    <li class="nav-item me-2" sec:authorize="hasAnyRole('BUYER', 'ADMIN')">
+                        <a class="nav-link" th:href="@{/buyer/dashboard}"><i class="bi bi-speedometer2 me-1"></i> Buyer Desk</a>
                     </li>
-                    <li class="nav-item me-2" sec:authorize="hasRole('BUYER')">
+                    <li class="nav-item me-2" sec:authorize="hasAnyRole('BUYER', 'ADMIN')">
                         <a class="nav-link" th:href="@{/buyer/rfqs}"><i class="bi bi-file-earmark-text me-1"></i> My RFQs</a>
                     </li>
-                    <li class="nav-item me-2" sec:authorize="hasRole('BUYER')">
+                    <li class="nav-item me-2" sec:authorize="hasAnyRole('BUYER', 'ADMIN')">
                         <a class="nav-link" th:href="@{/buyer/orders}"><i class="bi bi-box-seam me-1"></i> Orders & Lots</a>
                     </li>
-                    <li class="nav-item me-3" sec:authorize="hasRole('BUYER')">
+                    <li class="nav-item me-3" sec:authorize="hasAnyRole('BUYER', 'ADMIN')">
                         <a class="btn btn-teal btn-sm text-white" th:href="@{/buyer/rfqs/new}"><i class="bi bi-plus-circle me-1"></i> Post RFQ</a>
                     </li>
 
                     <!-- Job Worker Links -->
-                    <li class="nav-item me-2" sec:authorize="hasRole('JOB_WORKER')">
-                        <a class="nav-link" th:href="@{/job-worker/dashboard}"><i class="bi bi-speedometer2 me-1"></i> Dashboard</a>
+                    <li class="nav-item me-2" sec:authorize="hasAnyRole('JOB_WORKER', 'ADMIN')">
+                        <a class="nav-link" th:href="@{/job-worker/dashboard}"><i class="bi bi-speedometer2 me-1"></i> Mill Desk</a>
                     </li>
                     <li class="nav-item me-2" sec:authorize="hasRole('JOB_WORKER')">
                         <a class="nav-link" th:href="@{/job-worker/rfqs}"><i class="bi bi-briefcase me-1"></i> Market RFQs</a>
@@ -157,19 +157,12 @@
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h6 class="fw-semibold text-uppercase text-teal small mb-3">Digital Lot Passport</h6>
-                    <p class="text-secondary small">Every confirmed order is anchored with a Digital Production Lot Passport — recording material received, production milestones, quality inspection sign-offs, and quantity reconciliation.</p>
-                    <div class="d-flex align-items-center">
-                        <span class="badge bg-dark border border-secondary text-secondary me-2"><i class="bi bi-shield-check text-success me-1"></i> Audited Event Ledger</span>
-                        <span class="badge bg-dark border border-secondary text-secondary"><i class="bi bi-clock-history text-info me-1"></i> Real-time Milestones</span>
-                    </div>
+                    <p class="text-secondary small mb-0">Every confirmed order is anchored with a Digital Production Lot Passport — recording material received, production milestones, quality inspection sign-offs, and quantity reconciliation.</p>
                 </div>
             </div>
             <hr class="border-secondary opacity-25">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center small text-secondary">
-                <p class="mb-md-0">&copy; 2026 TexSetu B2B Marketplace. All rights reserved. Built for the Indian Textile Industry.</p>
-                <div>
-                    <span class="badge bg-secondary opacity-75">MVP Release v1.0.0</span>
-                </div>
+                <p class="mb-0">&copy; 2026 TexSetu B2B Marketplace. All rights reserved. Built for the Indian Textile Industry.</p>
             </div>
         </div>
         <!-- Bootstrap JS Bundle -->

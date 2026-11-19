@@ -55,4 +55,9 @@ public class HomeController {
     public String terms() {
         return "public/terms";
     }
+
+    @GetMapping("/error/403")
+    public String accessDenied() {
+        return "error/403";
+    }
 }

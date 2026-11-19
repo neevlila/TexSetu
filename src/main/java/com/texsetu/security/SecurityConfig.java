@@ -83,10 +83,11 @@ public class SecurityConfig {
                         "/images/**",
                         "/uploads/**",
                         "/actuator/health",
+                        "/error/403",
                         "/h2-console/**"
                 ).permitAll()
-                .requestMatchers("/buyer/**").hasRole(Role.BUYER.name())
-                .requestMatchers("/job-worker/**").hasRole(Role.JOB_WORKER.name())
+                .requestMatchers("/buyer/**").hasAnyRole(Role.BUYER.name(), Role.ADMIN.name())
+                .requestMatchers("/job-worker/**").hasAnyRole(Role.JOB_WORKER.name(), Role.ADMIN.name())
                 .requestMatchers("/admin/**").hasRole(Role.ADMIN.name())
                 .anyRequest().authenticated()
             )

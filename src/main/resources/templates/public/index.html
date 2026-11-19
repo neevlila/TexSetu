@@ -108,11 +108,11 @@
                     <div class="card h-100 shadow-sm border-0 p-3">
                         <div class="card-body">
                             <div class="mb-3">
-                                <span class="badge bg-teal bg-opacity-10 text-teal p-3 rounded-3 fs-4">
+                                <div class="category-icon-box">
                                     <i th:if="${cat.code == 'DYE_FABRIC_PROC'}" class="bi bi-droplet-half"></i>
                                     <i th:if="${cat.code == 'PRINT_EMBROIDERY'}" class="bi bi-printer-fill"></i>
                                     <i th:if="${cat.code == 'STITCH_FINISHING'}" class="bi bi-scissors"></i>
-                                </span>
+                                </div>
                             </div>
                             <h4 class="card-title fw-bold" th:text="${cat.name}">Category Name</h4>
                             <p class="card-text text-secondary small" th:text="${cat.description}">Category description</p>
