@@ -269,39 +269,189 @@ select:focus, .form-select:focus, input:focus, .form-control:focus {
     padding-bottom: 0.35rem;
 }
 
-/* Hero Section - Perfectly fills the screen below navbar with zero overflow */
+/* Text Gradient */
+.text-gradient-teal {
+    background: linear-gradient(135deg, #2dd4bf 0%, #14b8a6 50%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Pulsing Status Dot */
+.live-pulse {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #2dd4bf;
+    box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.7);
+    animation: pulseDot 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+    vertical-align: middle;
+}
+
+@keyframes pulseDot {
+    0% {
+        box-shadow: 0 0 0 0 rgba(45, 212, 191, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 8px rgba(45, 212, 191, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(45, 212, 191, 0);
+    }
+}
+
+/* Hero Section - Ambient Glows, Mesh, and Premium B2B Layout */
 .hero-banner {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background: radial-gradient(circle at 12% 18%, rgba(15, 118, 110, 0.28) 0%, transparent 42%),
+                radial-gradient(circle at 88% 70%, rgba(45, 212, 191, 0.14) 0%, transparent 48%),
+                linear-gradient(135deg, #090f1f 0%, #0f172a 50%, #131e36 100%);
     color: #ffffff;
     height: calc(100vh - 58px);
     min-height: calc(100vh - 58px);
     max-height: calc(100vh - 58px);
     display: flex;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1.25rem 0;
     border-bottom: 3px solid var(--teal-primary);
     box-sizing: border-box;
     overflow: hidden;
+    position: relative;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
 }
 
 .hero-banner .container-fluid {
     width: 100%;
+    position: relative;
+    z-index: 1;
 }
 
-.hero-banner h1.display-4 {
-    font-size: calc(1.4rem + 1.6vw);
-    line-height: 1.18;
+.hero-banner h1.hero-title {
+    font-size: calc(1.5rem + 1.7vw);
+    line-height: 1.15;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     margin-bottom: 0.85rem !important;
 }
 
-.hero-banner .lead {
+.hero-banner .hero-lead {
     font-size: 1.05rem;
-    line-height: 1.45;
+    line-height: 1.5;
+    color: #cbd5e1;
     margin-bottom: 1.25rem !important;
 }
 
-.hero-banner .hero-passport-card {
-    padding: 1.25rem !important;
+/* Hero Search Engine Bar */
+.hero-search-box {
+    background: rgba(30, 41, 59, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 50px;
+    padding: 5px 6px 5px 18px;
+    transition: all 0.2s ease;
+    max-width: 600px;
+}
+
+.hero-search-box:focus-within {
+    border-color: #2dd4bf;
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+    background: rgba(30, 41, 59, 0.95);
+}
+
+.hero-search-input {
+    background: transparent !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-size: 0.92rem;
+    box-shadow: none !important;
+}
+
+.hero-search-input::placeholder {
+    color: #94a3b8;
+}
+
+/* Hero Passport Card Enhancements */
+.hero-passport-card {
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border-radius: 14px;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5) !important;
+}
+
+.hero-passport-inner {
+    background: rgba(2, 6, 23, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px;
+}
+
+/* Mini Production Progress Stepper */
+.passport-stepper {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin: 1rem 0;
+}
+
+.passport-stepper::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    right: 12px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.passport-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.7rem;
+    color: #94a3b8;
+}
+
+.passport-step-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #1e293b;
+    border: 2px solid #475569;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    margin-bottom: 4px;
+    transition: all 0.2s ease;
+}
+
+.passport-step.completed .passport-step-dot {
+    background: #0f766e;
+    border-color: #2dd4bf;
+    color: #ffffff;
+}
+
+.passport-step.active .passport-step-dot {
+    background: #0ea5e9;
+    border-color: #38bdf8;
+    color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.3);
+}
+
+.passport-step.active {
+    color: #38bdf8;
+    font-weight: 600;
 }
 
 @media (max-width: 992px) {

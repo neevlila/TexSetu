@@ -30,6 +30,7 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("categories", catalogService.getAllActiveCategories());
+        model.addAttribute("featuredWorkers", jobWorkerProfileRepository.findByVerificationStatus(VerificationStatus.VERIFIED));
         model.addAttribute("verifiedProviderCount", jobWorkerProfileRepository.countByVerificationStatus(VerificationStatus.VERIFIED));
         model.addAttribute("totalRfqCount", rfqRepository.count());
         model.addAttribute("totalOrderCount", jobOrderRepository.count());

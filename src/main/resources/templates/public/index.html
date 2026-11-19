@@ -10,50 +10,112 @@
         <div class="container-fluid px-lg-5">
             <div class="row align-items-center g-4">
                 <div class="col-lg-7">
-                    <span class="badge bg-teal text-white mb-2 px-3 py-2 text-uppercase letter-spacing-1 fw-semibold">
-                        <i class="bi bi-geo-alt-fill me-1"></i> Surat Textile Hub &bull; Gujarat
-                    </span>
-                    <h1 class="display-4 fw-bold lh-sm mb-2">Connecting Textile Businesses. Simplifying Production.</h1>
-                    <p class="lead text-light opacity-90 mb-3">
-                        Discover verified dyeing mills, digital printing units, and garment finishing job-workers in Surat. Compare quotations, issue digital work orders, and track your production with the <strong>Digital Production Lot Passport</strong>.
+                    <!-- Live Network Status Pill -->
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2 border border-teal-subtle bg-teal-subtle text-teal small fw-semibold">
+                        <span class="live-pulse"></span>
+                        <span>SURAT TEXTILE HUB &bull; B2B JOB-WORK NETWORK</span>
+                    </div>
+
+                    <!-- Impact Headline with Gradient -->
+                    <h1 class="hero-title text-white">
+                        Connecting Textile Businesses.<br>
+                        <span class="text-gradient-teal">Simplifying Production.</span>
+                    </h1>
+
+                    <!-- Clear Subheading -->
+                    <p class="hero-lead">
+                        Direct discovery of audited dyeing mills, rotary printing units, and garment workshops across Pandesara, Sachin, and Udhna. Compare live quotations and track your lots with the <strong>Digital Production Lot Passport</strong>.
                     </p>
-                    <div class="d-flex flex-wrap gap-3">
-                        <a th:href="@{/discovery}" class="btn btn-teal btn-lg px-4 text-white fw-semibold shadow-sm">
-                            <i class="bi bi-search me-2"></i>Find Job Workers
+
+                    <!-- Integrated Search Engine Bar -->
+                    <form th:action="@{/discovery}" method="get" class="hero-search-box d-flex align-items-center mb-3">
+                        <i class="bi bi-search text-teal me-2 fs-6"></i>
+                        <input type="text" name="keyword" class="form-control hero-search-input" placeholder="Search by service: Jet Dyeing, Digital Print, Embroidery, Bleach...">
+                        <button type="submit" class="btn btn-teal rounded-pill px-3 py-1 btn-sm text-white fw-semibold text-nowrap">
+                            Find Mills <i class="bi bi-arrow-right ms-1"></i>
+                        </button>
+                    </form>
+
+                    <!-- Quick Action Buttons -->
+                    <div class="d-flex flex-wrap align-items-center gap-3">
+                        <a th:href="@{/buyer/rfqs/new}" class="btn btn-teal px-3 py-2 text-white fw-semibold rounded-3 shadow-sm btn-sm">
+                            <i class="bi bi-plus-circle me-1"></i> Post Market RFQ
                         </a>
-                        <a th:href="@{/auth/register}" class="btn btn-outline-light btn-lg px-4 fw-semibold">
-                            <i class="bi bi-building me-2"></i>Register Your Business
+                        <a th:href="@{/auth/register}" class="btn btn-outline-light px-3 py-2 fw-semibold rounded-3 btn-sm">
+                            <i class="bi bi-building me-1"></i> Register Mill Unit
                         </a>
+                        <span class="text-secondary small d-none d-xl-inline-block">
+                            <i class="bi bi-patch-check-fill text-teal me-1"></i>100% Verified GIDC Facilities
+                        </span>
                     </div>
                 </div>
+
+                <!-- Right Column: Interactive Digital Production Lot Passport -->
                 <div class="col-lg-5">
-                    <div class="card shadow-lg border-0 hero-passport-card text-white p-3 p-lg-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="bi bi-patch-check-fill text-teal fs-3 me-2"></i>
-                            <h5 class="mb-0 fw-bold text-white">Digital Production Lot Passport</h5>
+                    <div class="card shadow-lg border-0 hero-passport-card text-white p-3">
+                        <!-- Passport Header -->
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-teal me-2 px-2 py-1"><i class="bi bi-shield-check"></i></span>
+                                <div>
+                                    <h6 class="mb-0 fw-bold text-white">Digital Production Lot Passport</h6>
+                                    <small class="text-secondary font-monospace" style="font-size: 0.72rem;">PASSPORT ID: LOT-SRT-2026-9042</small>
+                                </div>
+                            </div>
+                            <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 small">
+                                <i class="bi bi-broadcast me-1"></i> LIVE TRACKING
+                            </span>
                         </div>
-                        <p class="small text-secondary mb-3">Audited milestone tracking from fabric receipt to quality acceptance. Every job order records an immutable timeline.</p>
-                        <div class="hero-passport-inner p-3 rounded mb-3 small">
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="text-secondary">LOT NO:</span>
-                                <span class="fw-mono text-teal">LOT-SRT-2026-9042</span>
+
+                        <!-- Mini Manufacturing Progress Stepper -->
+                        <div class="passport-stepper px-2 py-1">
+                            <div class="passport-step completed">
+                                <div class="passport-step-dot"><i class="bi bi-check-lg"></i></div>
+                                <span>Inward</span>
                             </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="text-secondary">FABRIC:</span>
-                                <span class="text-white">Rayon Viscose 30x30</span>
+                            <div class="passport-step completed">
+                                <div class="passport-step-dot"><i class="bi bi-check-lg"></i></div>
+                                <span>Jet Dyeing</span>
                             </div>
-                            <div class="d-flex justify-content-between mb-1">
-                                <span class="text-secondary">STAGE:</span>
-                                <span class="badge bg-success">QUALITY_PASSED</span>
+                            <div class="passport-step active">
+                                <div class="passport-step-dot"><i class="bi bi-gear-fill"></i></div>
+                                <span>Stenter</span>
+                            </div>
+                            <div class="passport-step">
+                                <div class="passport-step-dot"><i class="bi bi-shield"></i></div>
+                                <span>Quality Pass</span>
+                            </div>
+                        </div>
+
+                        <!-- Spec Details Box -->
+                        <div class="hero-passport-inner p-3 rounded mb-2 small">
+                            <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary border-opacity-10">
+                                <span class="text-secondary">Assigned Unit:</span>
+                                <span class="fw-semibold text-white">Radhe Krishna Mills (Pandesara)</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary border-opacity-10">
+                                <span class="text-secondary">Fabric Substrate:</span>
+                                <span class="text-white">Rayon Viscose 30x30 (2,500 Mts)</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1 pb-1 border-bottom border-secondary border-opacity-10">
+                                <span class="text-secondary">Inspection Standard:</span>
+                                <span class="text-teal fw-semibold">ISO Grade 4.5 Colorfastness</span>
                             </div>
                             <div class="d-flex justify-content-between">
-                                <span class="text-secondary">RECONCILED:</span>
-                                <span class="text-white">2,500 Mts &bull; 0% Defect</span>
+                                <span class="text-secondary">Reconciliation:</span>
+                                <span class="badge bg-success text-white">2,500 / 2,500 Mts (0% Defect)</span>
                             </div>
                         </div>
-                        <a th:href="@{/how-it-works}" class="text-teal small text-decoration-none fw-semibold">
-                            Explore Lot Passport Architecture <i class="bi bi-arrow-right"></i>
-                        </a>
+
+                        <!-- Card Footer -->
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a th:href="@{/how-it-works}" class="text-teal small text-decoration-none fw-semibold">
+                                Traceability Architecture <i class="bi bi-arrow-right"></i>
+                            </a>
+                            <span class="text-secondary font-monospace" style="font-size: 0.72rem;">
+                                <i class="bi bi-lock-fill text-teal me-1"></i>Audited Ledger
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,6 +180,47 @@
                             <p class="card-text text-secondary small" th:text="${cat.description}">Category description</p>
                             <a th:href="@{/discovery(categoryId=${cat.id})}" class="btn btn-outline-teal btn-sm fw-medium mt-2">
                                 Browse Providers in Category <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Verified Surat Mills Section -->
+    <section class="py-5 bg-light-subtle border-top" th:if="${featuredWorkers != null and !featuredWorkers.isEmpty()}">
+        <div class="container-fluid px-lg-5">
+            <div class="d-flex justify-content-between align-items-end mb-4">
+                <div>
+                    <span class="text-teal fw-semibold text-uppercase small">Surat Manufacturing Network</span>
+                    <h2 class="fw-bold mb-0">Verified Job-Work Units</h2>
+                </div>
+                <a th:href="@{/discovery}" class="text-teal text-decoration-none fw-semibold small">
+                    View All Directory <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4" th:each="worker : ${featuredWorkers}">
+                    <div class="card h-100 shadow-sm border-0 p-3">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="fw-bold mb-0 text-truncate" style="max-width: 220px;" th:text="${worker.businessName}">Mill Name</h5>
+                                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1 small">
+                                    <i class="bi bi-patch-check-fill me-1"></i> Verified
+                                </span>
+                            </div>
+                            <small class="text-muted mb-2">
+                                <i class="bi bi-geo-alt-fill text-teal me-1"></i><span th:text="${worker.address} + ', ' + ${worker.city}">Location</span>
+                            </small>
+                            <p class="text-secondary small flex-grow-1" th:text="${#strings.abbreviate(worker.description, 110)}">Description</p>
+                            <div class="d-flex justify-content-between align-items-center pt-2 border-top small mt-auto">
+                                <span class="text-muted">Daily Capacity:</span>
+                                <span class="fw-semibold text-teal"><span th:text="${worker.indicativeCapacityMetersPerDay != null ? #numbers.formatDecimal(worker.indicativeCapacityMetersPerDay, 0, 'COMMA', 0, 'POINT') : '10,000'}">10,000</span> Mts/Day</span>
+                            </div>
+                            <a th:href="@{/discovery/{id}(id=${worker.id})}" class="btn btn-outline-teal btn-sm fw-medium mt-3 w-100">
+                                View Capabilities & Machinery <i class="bi bi-arrow-right ms-1"></i>
                             </a>
                         </div>
                     </div>
