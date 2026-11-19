@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Provider Verification Queue')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <div class="mb-4">
+            <span class="text-teal small fw-semibold text-uppercase">Trust & Safety</span>
+            <h2 class="fw-bold mb-0">Job-Worker Verification Queue</h2>
+            <p class="text-secondary small">Review business premises, trade licenses, pollution control documents, and approve or reject provider verification badges.</p>
+        </div>
+
+        <!-- Pending Queue Table -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold text-warning"><i class="bi bi-hourglass-split me-2"></i>Pending Provider Verification Requests (<span th:text="${pendingList.size()}">0</span>)</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Unit Name</th>
+                            <th>Contact Person</th>
+                            <th>Email & Phone</th>
+                            <th>Location / Address</th>
+                            <th>Capacity / TAT</th>
+                            <th>Notes</th>
+                            <th>Verification Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="p : ${pendingList}">
+                            <td class="fw-bold text-navy" th:text="${p.businessName}">Shree Ambica</td>
+                            <td th:text="${p.user.fullName}">Pravin Solanki</td>
+                            <td>
+                                <div th:text="${p.user.email}">email</div>
+                                <small class="text-muted" th:text="${p.user.phoneNumber}">phone</small>
+                            </td>
+                            <td>
+                                <div class="text-truncate" style="max-width: 200px;" th:text="${p.address}">Address</div>
+                                <small class="text-muted" th:text="${p.city} + ', ' + ${p.serviceArea}">Surat</small>
+                            </td>
+                            <td>
+                                <div><span th:text="${p.indicativeCapacityMetersPerDay}">0</span> M/Day</div>
+                                <small class="text-muted"><span th:text="${p.turnaroundDays}">3</span> Days TAT</small>
+                            </td>
+                            <td class="small text-secondary" th:text="${p.verificationNotes}">Notes</td>
+                            <td>
+                                <div class="d-flex gap-2">
+                                    <form th:action="@{/admin/verifications/{id}/process(id=${p.id})}" method="post">
+                                        <input type="hidden" name="status" value="VERIFIED">
+                                        <input type="hidden" name="reviewNotes" value="Verified by admin: Business premises, trade license, and GST verified.">
+                                        <button type="submit" class="btn btn-sm btn-success text-white" onclick="return confirm('Approve this job-worker as a VERIFIED unit on TexSetu?');">
+                                            <i class="bi bi-check-lg me-1"></i> Approve
+                                        </button>
+                                    </form>
+                                    <form th:action="@{/admin/verifications/{id}/process(id=${p.id})}" method="post">
+                                        <input type="hidden" name="status" value="REJECTED">
+                                        <input type="hidden" name="reviewNotes" value="Verification rejected: Incomplete operational documentation or unresponsive.">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Reject verification for this unit?');">
+                                            <i class="bi bi-x-lg me-1"></i> Reject
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${pendingList.isEmpty()}">
+                            <td colspan="7" class="text-center py-4 text-secondary small">No pending verification requests.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- All Providers Directory -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-building me-2 text-teal"></i>All Registered Job-Work Units</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Unit Name</th>
+                            <th>Contact Person</th>
+                            <th>City</th>
+                            <th>Capacity</th>
+                            <th>Current Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="p : ${allProviders}">
+                            <td class="fw-bold" th:text="${p.businessName}">Name</td>
+                            <td th:text="${p.user.fullName}">Contact</td>
+                            <td th:text="${p.city}">Surat</td>
+                            <td><span th:text="${p.indicativeCapacityMetersPerDay}">0</span> M/Day</td>
+                            <td>
+                                <span class="badge" th:classappend="${p.verificationStatus.name() == 'VERIFIED'} ? 'bg-success' : (${p.verificationStatus.name() == 'PENDING'} ? 'bg-warning text-dark' : 'bg-danger')" th:text="${p.verificationStatus}">STATUS</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/providers/{id}(id=${p.id})}" target="_blank" class="btn btn-sm btn-outline-secondary">Public Profile</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

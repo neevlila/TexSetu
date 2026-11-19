@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Privacy Policy')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container py-5 my-4">
+        <div class="card shadow-sm border-0 p-4 p-md-5">
+            <h2 class="fw-bold mb-4">Privacy Policy</h2>
+            <p class="text-secondary small">Effective Date: November 2026</p>
+
+            <h5 class="fw-bold mt-4">1. Information We Collect</h5>
+            <p class="text-secondary small">TexSetu collects business registration details, business contact phone numbers, GST/PAN credentials for verification, technical processing specifications in RFQs, quotation prices, and operational production lot events.</p>
+
+            <h5 class="fw-bold mt-4">2. Usage of Data</h5>
+            <p class="text-secondary small">Your business data is strictly utilized to facilitate supplier discovery, quotation exchange, order management, and Digital Production Lot Passport maintenance. We never sell or share commercial order specifications with unauthorized third parties.</p>
+
+            <h5 class="fw-bold mt-4">3. Security & Access Control</h5>
+            <p class="text-secondary small">All passwords are cryptographically hashed using standard BCrypt encoders. Commercial quotations and work order records are restricted by role-based authorization to only the transacting buyer, selected service provider, and platform administrators.</p>
+
+            <h5 class="fw-bold mt-4">4. Verification Records</h5>
+            <p class="text-secondary small">Documents uploaded for job-worker verification are stored in secured storage buckets and reviewed only by authorized administrators.</p>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

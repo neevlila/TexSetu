@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Submit Quotation')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container py-4 my-2">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- RFQ Details Summary -->
+                <div class="card shadow-sm border-0 p-4 mb-4 bg-white">
+                    <span class="text-teal small fw-semibold text-uppercase">Submitting Bid for Requisition</span>
+                    <h3 class="fw-bold mb-2" th:text="${rfq.title}">RFQ Title</h3>
+                    <div class="row g-2 small text-secondary mt-1">
+                        <div class="col-md-4"><strong>RFQ Ref:</strong> <span class="font-monospace" th:text="${rfq.rfqNumber}">RFQ-123</span></div>
+                        <div class="col-md-4"><strong>Quantity:</strong> <span class="text-teal fw-bold" th:text="${rfq.quantity} + ' ' + ${rfq.unitOfMeasure}">2500 MTS</span></div>
+                        <div class="col-md-4"><strong>Target Date:</strong> <span th:text="${#temporals.format(rfq.desiredCompletionDate, 'dd MMM yyyy')}">Date</span></div>
+                        <div class="col-12 mt-2 pt-2 border-top">
+                            <strong>Fabric & Specs:</strong> <span th:text="${rfq.fabricDescription} + ' — ' + ${rfq.processingRequirements}">Specs</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quotation Submission Form -->
+                <div class="card shadow-sm border-0 p-4 p-md-5 bg-white">
+                    <h5 class="fw-bold text-navy mb-4 border-bottom pb-2"><i class="bi bi-tag text-teal me-2"></i>Quotation Specifications</h5>
+
+                    <form th:action="@{/job-worker/rfqs/{id}/quote(id=${rfq.id})}" th:object="${quoteDto}" method="post">
+                        <input type="hidden" th:field="*{rfqId}">
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Unit Price (INR per <span th:text="${rfq.unitOfMeasure}">MTS</span>) *</label>
+                                <input type="number" step="0.01" id="unitPriceInput" th:field="*{unitPrice}" class="form-control" placeholder="e.g. 14.50" oninput="calculateTotal()" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Calculated Total Price (INR) *</label>
+                                <input type="number" step="0.01" id="totalPriceInput" th:field="*{totalPrice}" class="form-control fw-bold text-teal" placeholder="e.g. 36250.00" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('totalPrice')}" th:errors="*{totalPrice}"></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Processing Duration (Days) *</label>
+                                <input type="number" th:field="*{estimatedDurationDays}" class="form-control" value="3" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('estimatedDurationDays')}" th:errors="*{estimatedDurationDays}"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Proposed Completion Date *</label>
+                                <input type="date" th:field="*{proposedCompletionDate}" class="form-control" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('proposedCompletionDate')}" th:errors="*{proposedCompletionDate}"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Quotation Validity Date *</label>
+                                <input type="date" th:field="*{validityDate}" class="form-control" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('validityDate')}" th:errors="*{validityDate}"></div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Commercial Terms & Conditions</label>
+                                <textarea th:field="*{termsConditions}" class="form-control" rows="2" placeholder="Waste tolerance (+/- 2%), delivery terms, payment milestone split"></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Additional Production Notes for Buyer</label>
+                                <textarea th:field="*{additionalNotes}" class="form-control" rows="2" placeholder="e.g. Machine availability, dye class used, lab dip turnaround"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                            <a th:href="@{/job-worker/rfqs}" class="btn btn-outline-secondary px-4">Cancel</a>
+                            <button type="submit" class="btn btn-teal text-white px-4 fw-semibold">
+                                <i class="bi bi-send me-1"></i> Submit Quotation to Buyer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const rfqQuantity = /*[[${rfq.quantity}]]*/ 1000;
+        function calculateTotal() {
+            const unitPrice = parseFloat(document.getElementById('unitPriceInput').value);
+            if (!isNaN(unitPrice) && unitPrice > 0) {
+                const total = (unitPrice * rfqQuantity).toFixed(2);
+                document.getElementById('totalPriceInput').value = total;
+            }
+        }
+        /*]]>*/
+    </script>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

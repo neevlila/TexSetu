@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Terms of Service')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container py-5 my-4">
+        <div class="card shadow-sm border-0 p-4 p-md-5">
+            <h2 class="fw-bold mb-4">Terms of Service</h2>
+            <p class="text-secondary small">Last Updated: November 2026</p>
+
+            <h5 class="fw-bold mt-4">1. Acceptance of Terms</h5>
+            <p class="text-secondary small">By registering or accessing TexSetu, textile businesses (buyers, traders, clothing brands, and job-workers) agree to abide by these Terms of Service.</p>
+
+            <h5 class="fw-bold mt-4">2. B2B Commercial Conduct & Verification</h5>
+            <p class="text-secondary small">Providers must provide accurate operational capability metrics. Unverified units are clearly demarcated as "PENDING". Verified status indicates administrative document review and does not constitute an independent performance warranty.</p>
+
+            <h5 class="fw-bold mt-4">3. Quotation & Work Order Contracts</h5>
+            <p class="text-secondary small">Submitting an RFQ invites quotations. Accepting a quotation creates a binding digital job-work order and initializes the production lot passport. Only one quotation can be accepted per RFQ under the platform's concurrency rules.</p>
+
+            <h5 class="fw-bold mt-4">4. Digital Production Lot Passport</h5>
+            <p class="text-secondary small">The Lot Passport provides an auditable database-backed record of transaction timestamps, stages, and quality inspections. It is an operational ledger and should not be construed as a cryptographic blockchain or third-party guarantee.</p>
+
+            <h5 class="fw-bold mt-4">5. Quality Inspection & Complaints</h5>
+            <p class="text-secondary small">Quality inspections must be recorded within the agreed timeframe. Unresolved quality issues requiring rework must be rectified before the job order can be marked completed.</p>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

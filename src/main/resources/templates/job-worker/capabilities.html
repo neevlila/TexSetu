@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Manage Capabilities')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="text-teal small fw-semibold text-uppercase">Service Offerings</span>
+                <h2 class="fw-bold mb-0">Manage Service Capabilities</h2>
+                <small class="text-secondary" th:text="${worker.businessName}">Radhe Krishna Dyeing</small>
+            </div>
+            <div>
+                <button type="button" class="btn btn-teal text-white fw-medium shadow-sm" data-bs-toggle="modal" data-bs-target="#addCapModal">
+                    <i class="bi bi-plus-circle me-1"></i> Add Service Capability
+                </button>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Service Name</th>
+                            <th>Category</th>
+                            <th>Indicative Rate</th>
+                            <th>Minimum Quantity (MOQ)</th>
+                            <th>Standard Lead Time</th>
+                            <th>Processing Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cap : ${capabilities}">
+                            <td>
+                                <div class="fw-bold text-navy" th:text="${cap.serviceName}">Reactive Jet Dyeing</div>
+                                <small class="text-secondary text-truncate d-block" style="max-width: 250px;" th:text="${cap.description}">Details</small>
+                            </td>
+                            <td><span class="badge bg-light text-secondary border" th:text="${cap.category.name}">Category</span></td>
+                            <td class="fw-bold text-teal">₹<span th:text="${cap.indicativePricePerUnit}">0.00</span> / <span th:text="${cap.unitOfMeasure}">MTS</span></td>
+                            <td><span th:text="${cap.minimumQuantity}">0</span> <span th:text="${cap.unitOfMeasure}">MTS</span></td>
+                            <td><span th:text="${cap.leadTimeDays}">3</span> Days</td>
+                            <td><small class="text-muted" th:text="${cap.processingDetails ?: 'Standard'}">Details</small></td>
+                            <td>
+                                <form th:action="@{/job-worker/capabilities/{id}/delete(id=${cap.id})}" method="post" onsubmit="return confirm('Remove this capability from your public catalog?');">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:if="${capabilities.isEmpty()}">
+                            <td colspan="7" class="text-center py-5 text-secondary small">
+                                <i class="bi bi-card-checklist display-4 d-block mb-2 text-muted"></i>
+                                No capabilities listed yet. Add your specialized processing capabilities so buyers can discover your unit.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Capability Modal -->
+        <div class="modal fade" id="addCapModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form th:action="@{/job-worker/capabilities/add}" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold"><i class="bi bi-plus-circle text-teal me-2"></i>Add Service Capability</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body small">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Service Category *</label>
+                                    <select name="categoryId" class="form-select" required>
+                                        <option value="">Select Processing Category</option>
+                                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Dyeing</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-semibold">Service Name *</label>
+                                    <input type="text" name="serviceName" class="form-control" placeholder="e.g. Soft Flow Reactive Dyeing (Cotton / Rayon)" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-semibold">Description *</label>
+                                    <textarea name="description" class="form-control" rows="2" placeholder="Describe the process, fabric types handled, and quality parameters" required></textarea>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Indicative Price Per Unit (INR) *</label>
+                                    <input type="number" step="0.01" name="indicativePrice" class="form-control" placeholder="e.g. 14.50" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Unit of Measure *</label>
+                                    <select name="unitOfMeasure" class="form-select" required>
+                                        <option th:each="u : ${uomList}" th:value="${u}" th:text="${u}">METERS</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Minimum Order Quantity (MOQ) *</label>
+                                    <input type="number" step="0.01" name="minQuantity" class="form-control" placeholder="e.g. 1000" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label fw-semibold">Lead Time (Days) *</label>
+                                    <input type="number" name="leadTimeDays" class="form-control" value="3" required>
+                                </div>
+                                <div class="col-md-8">
+                                    <label class="form-label fw-semibold">Processing Details & Pre-requisites</label>
+                                    <input type="text" name="processingDetails" class="form-control" placeholder="e.g. Includes scouring, bleaching, and stenter finishing">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-teal text-white btn-sm fw-medium">Save to Catalog</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

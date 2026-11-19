@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Register Business')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container py-5 my-2">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <span class="badge bg-teal p-2 rounded-circle fs-4 mb-2"><i class="bi bi-building-add"></i></span>
+                        <h3 class="fw-bold">Create Your TexSetu Account</h3>
+                        <p class="text-secondary small">Join the Surat & Gujarat B2B textile manufacturing network</p>
+                    </div>
+
+                    <form th:action="@{/auth/register-process}" th:object="${registrationDto}" method="post">
+                        <!-- Role Selection -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold small text-uppercase text-secondary">Select Your Account Type</label>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <input type="radio" class="btn-check" name="role" id="roleBuyer" value="BUYER" th:field="*{role}" onchange="toggleWorkerFields()">
+                                    <label class="btn btn-outline-secondary w-100 p-3 text-start" for="roleBuyer">
+                                        <div class="fw-bold fs-6"><i class="bi bi-cart-check me-2 text-primary"></i> Textile Buyer / Trader</div>
+                                        <small class="text-secondary d-block mt-1">Clothing brand, fabric trader, or manufacturer seeking job-work units.</small>
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="radio" class="btn-check" name="role" id="roleWorker" value="JOB_WORKER" th:field="*{role}" onchange="toggleWorkerFields()">
+                                    <label class="btn btn-outline-secondary w-100 p-3 text-start" for="roleWorker">
+                                        <div class="fw-bold fs-6"><i class="bi bi-tools me-2 text-success"></i> Job-Work Service Unit</div>
+                                        <small class="text-secondary d-block mt-1">Dyeing mill, printing unit, embroidery house, or stitching workshop.</small>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Role error</div>
+                        </div>
+
+                        <!-- Basic Account Info -->
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Contact Person Name *</label>
+                                <input type="text" th:field="*{fullName}" class="form-control" placeholder="e.g. Ramesh Patel" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Phone Number *</label>
+                                <input type="text" th:field="*{phoneNumber}" class="form-control" placeholder="+91 98250 XXXXX" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Business Email *</label>
+                                <input type="email" th:field="*{email}" class="form-control" placeholder="contact@business.com" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Password *</label>
+                                <input type="password" th:field="*{password}" class="form-control" placeholder="Minimum 6 characters" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                            </div>
+                        </div>
+
+                        <!-- Business Profile Info -->
+                        <h6 class="fw-bold text-navy mt-4 mb-3 border-bottom pb-2">Business Profile Details</h6>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Registered Business Name *</label>
+                                <input type="text" th:field="*{businessName}" class="form-control" placeholder="e.g. Radhe Krishna Dyeing Mills" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('businessName')}" th:errors="*{businessName}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Business Type *</label>
+                                <input type="text" th:field="*{businessType}" class="form-control" placeholder="e.g. Dyeing Unit, Fabric Trader, Brand" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">GSTIN (Optional)</label>
+                                <input type="text" th:field="*{gstNumber}" class="form-control" placeholder="24AAAAA0000A1Z5">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">PAN Number (Optional)</label>
+                                <input type="text" th:field="*{panNumber}" class="form-control" placeholder="AAAAA0000A">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Unit / Office Address *</label>
+                                <textarea th:field="*{address}" class="form-control" rows="2" placeholder="Plot / Shed No, GIDC / Market, Road" required></textarea>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">City *</label>
+                                <input type="text" th:field="*{city}" class="form-control" value="Surat" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">State *</label>
+                                <input type="text" th:field="*{state}" class="form-control" value="Gujarat" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Pincode *</label>
+                                <input type="text" th:field="*{pincode}" class="form-control" placeholder="394221" required>
+                            </div>
+                        </div>
+
+                        <!-- Job-Worker Specific Fields -->
+                        <div id="workerFields" class="p-3 bg-light rounded border mb-4">
+                            <h6 class="fw-bold text-teal mb-3"><i class="bi bi-tools me-1"></i> Job-Work Facility Specifications</h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Indicative Capacity (Meters or Pieces/Day)</label>
+                                    <input type="number" step="100" th:field="*{indicativeCapacity}" class="form-control" placeholder="e.g. 5000">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-semibold">Standard Turnaround Time (Days)</label>
+                                    <input type="number" th:field="*{turnaroundDays}" class="form-control" placeholder="3">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label small fw-semibold">Installed Machinery & Equipment Overview</label>
+                                    <textarea th:field="*{machineryDetails}" class="form-control" rows="2" placeholder="e.g. Soft flow jet dyeing machines, 8-chamber stenter, Kyocera digital printer"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-teal text-white w-100 py-2 fw-semibold">Complete Registration</button>
+                    </form>
+
+                    <div class="text-center mt-4 small">
+                        Already have an account? <a th:href="@{/auth/login}" class="text-teal fw-semibold">Sign In</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleWorkerFields() {
+            const isWorker = document.getElementById('roleWorker').checked;
+            document.getElementById('workerFields').style.display = isWorker ? 'block' : 'none';
+        }
+        document.addEventListener('DOMContentLoaded', toggleWorkerFields);
+    </script>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

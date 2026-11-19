@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Job-Worker Dashboard')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="text-teal small fw-semibold text-uppercase">Manufacturing Operations</span>
+                <h2 class="fw-bold mb-0" th:text="${worker.businessName}">Radhe Krishna Dyeing Mills</h2>
+                <small class="text-secondary"><i class="bi bi-geo-alt-fill text-teal me-1"></i> <span th:text="${worker.address} + ', ' + ${worker.city}">Surat</span></small>
+            </div>
+            <div>
+                <span class="badge bg-success p-2" th:if="${worker.verificationStatus.name() == 'VERIFIED'}">
+                    <i class="bi bi-patch-check-fill me-1"></i> Verified Unit
+                </span>
+                <span class="badge bg-secondary p-2" th:if="${worker.verificationStatus.name() == 'PENDING'}">
+                    <i class="bi bi-hourglass me-1"></i> Pending Verification
+                </span>
+                <a th:href="@{/job-worker/profile}" class="btn btn-outline-secondary btn-sm ms-2"><i class="bi bi-gear me-1"></i> Unit Profile</a>
+            </div>
+        </div>
+
+        <!-- Metrics Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <span class="text-secondary small fw-semibold">QUOTES SUBMITTED</span>
+                    <h3 class="fw-bold text-navy mt-1 mb-0" th:text="${stats.totalQuotes}">0</h3>
+                    <div class="mt-2 small text-muted"><span th:text="${stats.pendingQuotes}">0</span> Pending Buyer Decision</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <span class="text-secondary small fw-semibold">ACCEPTED BIDS</span>
+                    <h3 class="fw-bold text-teal mt-1 mb-0" th:text="${stats.acceptedOrders}">0</h3>
+                    <div class="mt-2 small text-muted">Won Orders</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <span class="text-secondary small fw-semibold">ACTIVE LOTS IN PRODUCTION</span>
+                    <h3 class="fw-bold text-warning mt-1 mb-0" th:text="${stats.activeOrders}">0</h3>
+                    <div class="mt-2 small"><a th:href="@{/job-worker/orders}" class="text-teal text-decoration-none">Manage Milestones <i class="bi bi-arrow-right"></i></a></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="metric-card">
+                    <span class="text-secondary small fw-semibold">INDICATIVE DAILY CAPACITY</span>
+                    <h3 class="fw-bold text-navy mt-1 mb-0"><span th:text="${#numbers.formatDecimal(worker.indicativeCapacityMetersPerDay, 0, 'COMMA', 0, 'POINT')}">10,000</span> <span class="fs-6 fw-normal">Mts/Day</span></h3>
+                    <div class="mt-2 small text-muted">Turnaround: <span th:text="${worker.turnaroundDays}">3</span> Days</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Work Orders Table -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-boxes text-teal me-2"></i>Active Work Orders (Lot Passports)</h5>
+                <a th:href="@{/job-worker/orders}" class="btn btn-outline-secondary btn-sm">View All Orders</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Order No</th>
+                            <th>Buyer Company</th>
+                            <th>Agreed Quantity</th>
+                            <th>Current Stage</th>
+                            <th>Due Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="order : ${orders}">
+                            <td class="fw-bold font-monospace" th:text="${order.orderNumber}">ORD-123</td>
+                            <td>
+                                <div class="fw-semibold" th:text="${order.buyer.fullName}">Buyer</div>
+                                <small class="text-muted" th:text="${order.buyer.email}">buyer@email.com</small>
+                            </td>
+                            <td><span th:text="${order.agreedQuantity}">0</span> <span th:text="${order.unitOfMeasure}">MTS</span></td>
+                            <td>
+                                <span class="badge bg-light text-navy border" th:text="${order.productionLot != null ? order.productionLot.currentStage : 'INITIALIZING'}">Stage</span>
+                            </td>
+                            <td th:text="${#temporals.format(order.expectedCompletionDate, 'dd MMM yyyy')}">Date</td>
+                            <td>
+                                <span class="badge" th:classappend="'badge-status-' + ${order.currentStatus}" th:text="${order.currentStatus}">PROCESSING</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/job-worker/orders/{id}(id=${order.id})}" class="btn btn-sm btn-teal text-white">
+                                    <i class="bi bi-arrow-repeat me-1"></i> Update Stage
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${orders.isEmpty()}">
+                            <td colspan="7" class="text-center py-4 text-secondary small">No active orders assigned yet. Submit quotations on market RFQs to receive work orders.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Submitted Quotes Table -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-tags text-teal me-2"></i>Recent Submitted Quotations</h5>
+                <a th:href="@{/job-worker/quotes}" class="btn btn-outline-secondary btn-sm">View All Quotes</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Quote No</th>
+                            <th>RFQ Ref</th>
+                            <th>Unit Rate</th>
+                            <th>Total Price</th>
+                            <th>Proposed Completion</th>
+                            <th>Validity</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="q : ${recentQuotes}">
+                            <td class="fw-bold font-monospace" th:text="${q.quoteNumber}">QUO-123</td>
+                            <td th:text="${q.rfq.rfqNumber}">RFQ-123</td>
+                            <td class="fw-semibold text-teal">₹<span th:text="${q.unitPrice}">0.00</span> / <span th:text="${q.rfq.unitOfMeasure}">MTS</span></td>
+                            <td class="fw-bold">₹<span th:text="${#numbers.formatDecimal(q.totalPrice, 0, 'COMMA', 2, 'POINT')}">0.00</span></td>
+                            <td th:text="${#temporals.format(q.proposedCompletionDate, 'dd MMM yyyy')}">Date</td>
+                            <td th:text="${#temporals.format(q.validityDate, 'dd MMM yyyy')}">Date</td>
+                            <td>
+                                <span class="badge" th:classappend="'badge-status-' + ${q.status}" th:text="${q.status}">SUBMITTED</span>
+                            </td>
+                        </tr>
+                        <tr th:if="${recentQuotes.isEmpty()}">
+                            <td colspan="7" class="text-center py-4 text-secondary small">No quotations submitted yet. <a th:href="@{/job-worker/rfqs}">Browse open RFQs in market</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

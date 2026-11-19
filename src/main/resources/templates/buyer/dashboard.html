@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Buyer Dashboard')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="text-teal small fw-semibold text-uppercase">Buyer Portal</span>
+                <h2 class="fw-bold mb-0">Production & Job-Work Overview</h2>
+            </div>
+            <div>
+                <a th:href="@{/buyer/rfqs/new}" class="btn btn-teal text-white shadow-sm fw-medium">
+                    <i class="bi bi-plus-circle me-1"></i> Post New RFQ
+                </a>
+            </div>
+        </div>
+
+        <!-- Metrics Row -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-secondary small fw-semibold">TOTAL RFQS</span>
+                            <h3 class="fw-bold text-navy mt-1 mb-0" th:text="${totalRfqs}">0</h3>
+                        </div>
+                        <span class="badge bg-primary bg-opacity-10 text-primary p-3 rounded-circle fs-4">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </span>
+                    </div>
+                    <div class="mt-3 small">
+                        <a th:href="@{/buyer/rfqs}" class="text-teal text-decoration-none fw-medium">View all posted RFQs <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-secondary small fw-semibold">ACTIVE ORDERS</span>
+                            <h3 class="fw-bold text-navy mt-1 mb-0" th:text="${activeOrders}">0</h3>
+                        </div>
+                        <span class="badge bg-warning bg-opacity-10 text-warning p-3 rounded-circle fs-4">
+                            <i class="bi bi-gear-wide-connected"></i>
+                        </span>
+                    </div>
+                    <div class="mt-3 small">
+                        <a th:href="@{/buyer/orders}" class="text-teal text-decoration-none fw-medium">Track lot production stages <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="metric-card">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-secondary small fw-semibold">COMPLETED ORDERS</span>
+                            <h3 class="fw-bold text-navy mt-1 mb-0" th:text="${completedOrders}">0</h3>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success p-3 rounded-circle fs-4">
+                            <i class="bi bi-check-circle"></i>
+                        </span>
+                    </div>
+                    <div class="mt-3 small">
+                        <a th:href="@{/buyer/orders}" class="text-teal text-decoration-none fw-medium">View completed records <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent RFQs Table -->
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-file-earmark-text me-2 text-teal"></i>Recent Requests for Quotation (RFQs)</h5>
+                <a th:href="@{/buyer/rfqs}" class="btn btn-outline-secondary btn-sm">View All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>RFQ Ref</th>
+                            <th>Category</th>
+                            <th>Fabric Spec</th>
+                            <th>Quantity</th>
+                            <th>Target Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="rfq : ${rfqs}">
+                            <td class="fw-bold font-monospace" th:text="${rfq.rfqNumber}">RFQ-123</td>
+                            <td><span class="badge bg-light text-secondary border" th:text="${rfq.category.name}">Category</span></td>
+                            <td class="text-truncate" style="max-width: 250px;" th:text="${rfq.fabricDescription}">Description</td>
+                            <td class="fw-semibold"><span th:text="${rfq.quantity}">0</span> <span th:text="${rfq.unitOfMeasure}">MTS</span></td>
+                            <td th:text="${#temporals.format(rfq.desiredCompletionDate, 'dd MMM yyyy')}">Date</td>
+                            <td>
+                                <span class="badge" th:classappend="'badge-status-' + ${rfq.status}" th:text="${rfq.status}">OPEN</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/buyer/rfqs/{id}/quotes(id=${rfq.id})}" class="btn btn-sm btn-outline-teal">
+                                    <i class="bi bi-tags me-1"></i> Compare Quotes
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${rfqs.isEmpty()}">
+                            <td colspan="7" class="text-center py-4 text-secondary small">No RFQs created yet. Click "Post New RFQ" to solicit quotes from verified units.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Active Work Orders Table -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-box-seam me-2 text-teal"></i>Active Job-Work Orders & Lot Passports</h5>
+                <a th:href="@{/buyer/orders}" class="btn btn-outline-secondary btn-sm">View All Orders</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Order No</th>
+                            <th>Service Provider</th>
+                            <th>Agreed Qty</th>
+                            <th>Agreed Amount</th>
+                            <th>Current Stage</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="order : ${orders}">
+                            <td class="fw-bold font-monospace" th:text="${order.orderNumber}">ORD-123</td>
+                            <td th:text="${order.jobWorker.businessName}">Radhe Krishna Dyeing</td>
+                            <td><span th:text="${order.agreedQuantity}">0</span> <span th:text="${order.unitOfMeasure}">MTS</span></td>
+                            <td class="fw-bold text-teal">₹<span th:text="${#numbers.formatDecimal(order.agreedPrice, 0, 'COMMA', 2, 'POINT')}">0.00</span></td>
+                            <td>
+                                <span class="badge bg-light text-navy border" th:text="${order.productionLot != null ? order.productionLot.currentStage : 'INITIALIZING'}">Stage</span>
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="'badge-status-' + ${order.currentStatus}" th:text="${order.currentStatus}">CONFIRMED</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/buyer/orders/{id}(id=${order.id})}" class="btn btn-sm btn-teal text-white">
+                                    <i class="bi bi-passport me-1"></i> View Lot Passport
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${orders.isEmpty()}">
+                            <td colspan="7" class="text-center py-4 text-secondary small">No active orders found.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

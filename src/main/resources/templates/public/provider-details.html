@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head(${provider.businessName})}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container py-4 my-2">
+        <div class="row g-4">
+            <!-- Left Profile Card -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 p-4 mb-4">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <span class="badge bg-teal bg-opacity-10 text-teal mb-2" th:text="${provider.businessType}">Processing Mill</span>
+                            <h2 class="fw-bold mb-1" th:text="${provider.businessName}">Business Name</h2>
+                            <p class="text-secondary small mb-0"><i class="bi bi-geo-alt-fill text-teal me-1"></i> <span th:text="${provider.address} + ', ' + ${provider.city}">Address</span></p>
+                        </div>
+                        <div class="text-end">
+                            <span class="badge bg-success p-2" th:if="${provider.verificationStatus.name() == 'VERIFIED'}">
+                                <i class="bi bi-patch-check-fill me-1"></i> Verified Unit
+                            </span>
+                            <span class="badge bg-secondary p-2" th:if="${provider.verificationStatus.name() == 'PENDING'}">
+                                <i class="bi bi-hourglass me-1"></i> Pending Verification
+                            </span>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mt-4 mb-2">Unit Overview</h5>
+                    <p class="text-secondary" th:text="${provider.description ?: 'No detailed description provided.'}">Description</p>
+
+                    <h5 class="fw-bold mt-4 mb-3">Machinery & Technical Infrastructure</h5>
+                    <div class="p-3 bg-light rounded border small">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <span class="text-muted d-block">Indicative Available Capacity:</span>
+                                <span class="fw-bold text-teal fs-5" th:text="${#numbers.formatDecimal(provider.indicativeCapacityMetersPerDay, 0, 'COMMA', 0, 'POINT')} + ' Meters/Day'">10,000 Mts/Day</span>
+                                <span class="text-muted small d-block">Last Updated: <span th:text="${#temporals.format(provider.capacityLastUpdated, 'dd MMM yyyy')}">Date</span></span>
+                            </div>
+                            <div class="col-md-6">
+                                <span class="text-muted d-block">Average Turnaround Time (TAT):</span>
+                                <span class="fw-bold fs-5" th:text="${provider.turnaroundDays} + ' Working Days'">3 Days</span>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <span class="text-muted d-block">Installed Machinery & Specifications:</span>
+                                <p class="fw-medium mb-0 mt-1" th:text="${provider.machineryDetails ?: 'Machinery specifications on file.'}">Machinery</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mt-5 mb-3">Offered Service Capabilities & Indicative Rates</h5>
+                    <div class="table-responsive" th:if="${capabilities.size() > 0}">
+                        <table class="table table-hover align-middle border">
+                            <thead class="table-light small">
+                                <tr>
+                                    <th>Service Name</th>
+                                    <th>Category</th>
+                                    <th>Indicative Rate</th>
+                                    <th>Min. Order Qty (MOQ)</th>
+                                    <th>Lead Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="cap : ${capabilities}">
+                                    <td>
+                                        <div class="fw-semibold" th:text="${cap.serviceName}">Service</div>
+                                        <small class="text-secondary" th:text="${cap.description}">Details</small>
+                                    </td>
+                                    <td><span class="badge bg-light text-secondary border" th:text="${cap.category.name}">Category</span></td>
+                                    <td class="fw-bold text-teal">₹<span th:text="${cap.indicativePricePerUnit}">0.00</span> / <span th:text="${cap.unitOfMeasure}">MTS</span></td>
+                                    <td><span th:text="${cap.minimumQuantity}">0</span> <span th:text="${cap.unitOfMeasure}">MTS</span></td>
+                                    <td><span th:text="${cap.leadTimeDays}">3</span> Days</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div th:if="${capabilities.isEmpty()}" class="p-3 text-center bg-light rounded text-secondary small">
+                        No individual service capabilities currently published. Submit an RFQ to request quotation.
+                    </div>
+                </div>
+
+                <!-- Transaction-Linked Reviews -->
+                <div class="card shadow-sm border-0 p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold mb-0">Transaction-Linked Reviews</h5>
+                        <div th:if="${reviews.size() > 0}">
+                            <span class="badge bg-warning text-dark fs-6"><i class="bi bi-star-fill text-warning me-1"></i> <span th:text="${#numbers.formatDecimal(avgRating, 1, 1)}">4.5</span> / 5.0</span>
+                            <span class="text-secondary small ms-1">(<span th:text="${reviews.size()}">0</span> Reviews)</span>
+                        </div>
+                    </div>
+
+                    <div class="list-group list-group-flush" th:if="${reviews.size() > 0}">
+                        <div class="list-group-item px-0 py-3" th:each="rev : ${reviews}">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="fw-semibold" th:text="${rev.reviewer.fullName}">Buyer Name</span>
+                                <span class="text-warning">
+                                    <i th:each="star : ${#numbers.sequence(1, rev.rating)}" class="bi bi-star-fill"></i>
+                                </span>
+                            </div>
+                            <p class="small text-secondary mb-1" th:text="${rev.comment}">Review comment</p>
+                            <small class="text-muted"><i class="bi bi-check-circle-fill text-success me-1"></i> Verified Transaction &bull; <span th:text="${#temporals.format(rev.createdAt, 'dd MMM yyyy')}">Date</span></small>
+                        </div>
+                    </div>
+                    <p class="text-secondary small mb-0" th:if="${reviews.isEmpty()}">No customer reviews recorded yet for this provider.</p>
+                </div>
+            </div>
+
+            <!-- Right Action Sidebar -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 p-4 sticky-top" style="top: 90px;">
+                    <h5 class="fw-bold mb-3">Work with this Unit</h5>
+                    <p class="small text-secondary mb-4">Submit a Request for Quotation (RFQ) directly to receive tailored pricing, delivery schedules, and lot terms.</p>
+                    <a th:href="@{/buyer/rfqs/new}" class="btn btn-teal text-white w-100 fw-medium mb-3 py-2">
+                        <i class="bi bi-send me-1"></i> Submit RFQ to Market
+                    </a>
+                    <hr>
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Contact Person:</span>
+                            <span class="fw-semibold" th:text="${provider.user.fullName}">Contact</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Registered Email:</span>
+                            <span class="fw-semibold text-truncate" style="max-width: 170px;" th:text="${provider.user.email}">Email</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Service Region:</span>
+                            <span class="fw-semibold" th:text="${provider.serviceArea}">Area</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

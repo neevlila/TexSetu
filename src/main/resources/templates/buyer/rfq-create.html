@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Create RFQ')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container py-4 my-2">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div class="card shadow-sm border-0 p-4 p-md-5">
+                    <div class="mb-4 border-bottom pb-3">
+                        <span class="text-teal small fw-semibold text-uppercase">Direct Job-Work Requisition</span>
+                        <h2 class="fw-bold mb-1">Create Request for Quotation (RFQ)</h2>
+                        <p class="text-secondary small">Broadcast your textile processing requirements to verified mills and units in Surat.</p>
+                    </div>
+
+                    <form th:action="@{/buyer/rfqs/new}" th:object="${rfqDto}" method="post" enctype="multipart/form-data">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Service Category *</label>
+                                <select th:field="*{categoryId}" class="form-select" required>
+                                    <option value="">Select Service Category</option>
+                                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Dyeing</option>
+                                </select>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('categoryId')}" th:errors="*{categoryId}"></div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">RFQ Title / Job Summary *</label>
+                                <input type="text" th:field="*{title}" class="form-control" placeholder="e.g. Soft Flow Reactive Dyeing for 5000 Mts Cotton" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Fabric & Material Description *</label>
+                                <textarea th:field="*{fabricDescription}" class="form-control" rows="2" placeholder="Specify yarn count, blend, weave (e.g. 100% Rayon 30x30, 68x64 width 44-inch), grey fabric state" required></textarea>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('fabricDescription')}" th:errors="*{fabricDescription}"></div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Quantity *</label>
+                                <input type="number" step="0.01" th:field="*{quantity}" class="form-control" placeholder="e.g. 2500" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Unit of Measure *</label>
+                                <select th:field="*{unitOfMeasure}" class="form-select" required>
+                                    <option value="METERS">METERS</option>
+                                    <option value="KILOGRAMS">KILOGRAMS</option>
+                                    <option value="PIECES">PIECES</option>
+                                    <option value="BATCHES">BATCHES</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-semibold">Desired Completion Date *</label>
+                                <input type="date" th:field="*{desiredCompletionDate}" class="form-control" required>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('desiredCompletionDate')}" th:errors="*{desiredCompletionDate}"></div>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Processing Requirements & Shade Instructions *</label>
+                                <textarea th:field="*{processingRequirements}" class="form-control" rows="3" placeholder="Provide color pantone, shrinkage tolerance, wash fastness, chemical finish, soft feel requirements" required></textarea>
+                                <div class="text-danger small" th:if="${#fields.hasErrors('processingRequirements')}" th:errors="*{processingRequirements}"></div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Technical Specifications (Optional)</label>
+                                <textarea th:field="*{technicalSpecifications}" class="form-control" rows="2" placeholder="Stenter temperature, moisture control, delta E tolerance"></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Delivery & Packaging Requirements</label>
+                                <textarea th:field="*{deliveryRequirements}" class="form-control" rows="2" placeholder="Roll packing on paper tubes, master bag sealing, delivery location in Surat"></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Reference Sample / Design File Attachment</label>
+                                <input type="file" th:field="*{attachment}" class="form-control">
+                                <small class="text-muted">Supported formats: JPG, PNG, PDF (Max 10MB)</small>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+                            <a th:href="@{/buyer/rfqs}" class="btn btn-outline-secondary px-4">Cancel</a>
+                            <button type="submit" class="btn btn-teal text-white px-4 fw-semibold"><i class="bi bi-send me-1"></i> Submit RFQ to Market</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

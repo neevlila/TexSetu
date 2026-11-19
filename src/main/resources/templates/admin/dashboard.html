@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Admin Dashboard')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="text-teal small fw-semibold text-uppercase">Platform Governance</span>
+                <h2 class="fw-bold mb-0">Master Administrator Control Panel</h2>
+            </div>
+            <div class="d-flex gap-2">
+                <a th:href="@{/admin/reports/orders.csv}" class="btn btn-outline-dark btn-sm"><i class="bi bi-download me-1"></i> Export Orders CSV</a>
+                <a th:href="@{/admin/reports/providers.csv}" class="btn btn-outline-dark btn-sm"><i class="bi bi-download me-1"></i> Export Providers CSV</a>
+                <a th:href="@{/admin/reports/lots.csv}" class="btn btn-outline-teal btn-sm"><i class="bi bi-download me-1"></i> Export Lot Passports CSV</a>
+            </div>
+        </div>
+
+        <!-- Metrics Cards Grid -->
+        <div class="row g-4 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="metric-card">
+                    <span class="text-secondary small fw-semibold">TOTAL REGISTERED USERS</span>
+                    <h3 class="fw-bold text-navy mt-1 mb-0" th:text="${stats.totalUsers}">0</h3>
+                    <div class="mt-2 small text-muted"><span th:text="${stats.buyerCount}">0</span> Buyers &bull; <span th:text="${stats.workerCount}">0</span> Job Units</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="metric-card">
+                    <span class="text-secondary small fw-semibold">PENDING VERIFICATIONS</span>
+                    <h3 class="fw-bold text-warning mt-1 mb-0" th:text="${stats.pendingVerifications}">0</h3>
+                    <div class="mt-2 small"><a th:href="@{/admin/verifications}" class="text-teal text-decoration-none">Review Queue <i class="bi bi-arrow-right"></i></a></div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="metric-card">
+                    <span class="text-secondary small fw-semibold">ACTIVE PRODUCTION ORDERS</span>
+                    <h3 class="fw-bold text-teal mt-1 mb-0" th:text="${stats.activeOrders}">0</h3>
+                    <div class="mt-2 small text-muted"><span th:text="${stats.completedOrders}">0</span> Completed Orders</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="metric-card">
+                    <span class="text-secondary small fw-semibold">OPEN DISPUTES & COMPLAINTS</span>
+                    <h3 class="fw-bold text-danger mt-1 mb-0" th:text="${stats.openComplaints}">0</h3>
+                    <div class="mt-2 small"><a th:href="@{/admin/complaints}" class="text-danger text-decoration-none">Manage Disputes <i class="bi bi-arrow-right"></i></a></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Administration Shortcuts -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-3">
+                <a th:href="@{/admin/verifications}" class="card shadow-sm border-0 p-3 text-decoration-none text-navy h-100 hover-card">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-success bg-opacity-10 text-success p-3 rounded-3 fs-4 me-3"><i class="bi bi-patch-check"></i></span>
+                        <div>
+                            <h6 class="fw-bold mb-1">Provider Verification</h6>
+                            <p class="small text-secondary mb-0">Approve/reject factory certificates</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/admin/users}" class="card shadow-sm border-0 p-3 text-decoration-none text-navy h-100 hover-card">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-primary bg-opacity-10 text-primary p-3 rounded-3 fs-4 me-3"><i class="bi bi-people"></i></span>
+                        <div>
+                            <h6 class="fw-bold mb-1">User Management</h6>
+                            <p class="small text-secondary mb-0">Manage buyers and job units</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/admin/categories}" class="card shadow-sm border-0 p-3 text-decoration-none text-navy h-100 hover-card">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-teal bg-opacity-10 text-teal p-3 rounded-3 fs-4 me-3"><i class="bi bi-layers"></i></span>
+                        <div>
+                            <h6 class="fw-bold mb-1">Service Categories</h6>
+                            <p class="small text-secondary mb-0">Dyeing, Printing, Stitching</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a th:href="@{/admin/complaints}" class="card shadow-sm border-0 p-3 text-decoration-none text-navy h-100 hover-card">
+                    <div class="d-flex align-items-center">
+                        <span class="badge bg-danger bg-opacity-10 text-danger p-3 rounded-3 fs-4 me-3"><i class="bi bi-exclamation-triangle"></i></span>
+                        <div>
+                            <h6 class="fw-bold mb-1">Disputes & Complaints</h6>
+                            <p class="small text-secondary mb-0">Investigate quality discrepancies</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Pending Verifications Queue -->
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-hourglass-split text-warning me-2"></i>Pending Provider Verification Queue</h5>
+                <a th:href="@{/admin/verifications}" class="btn btn-outline-secondary btn-sm">Full Queue</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Unit Name</th>
+                            <th>Business Type</th>
+                            <th>Location / GIDC</th>
+                            <th>Capacity</th>
+                            <th>Submitted Notes</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="p : ${pendingVerifications}">
+                            <td class="fw-bold text-navy" th:text="${p.businessName}">Shree Ambica Jobworks</td>
+                            <td><span class="badge bg-light text-secondary border" th:text="${p.businessType}">Type</span></td>
+                            <td th:text="${p.city} + ' (' + ${p.serviceArea} + ')'">Surat</td>
+                            <td><span th:text="${p.indicativeCapacityMetersPerDay}">0</span> Mts/Day</td>
+                            <td class="small text-secondary" th:text="${p.verificationNotes}">Awaiting license</td>
+                            <td>
+                                <a th:href="@{/admin/verifications}" class="btn btn-sm btn-teal text-white">Review & Verify</a>
+                            </td>
+                        </tr>
+                        <tr th:if="${pendingVerifications.isEmpty()}">
+                            <td colspan="6" class="text-center py-4 text-secondary small">No pending verification requests at this time. All provider profiles are reviewed.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

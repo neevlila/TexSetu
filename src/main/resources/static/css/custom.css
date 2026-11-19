@@ -1,0 +1,153 @@
+/* TexSetu Custom B2B Industrial Styling */
+:root {
+    --navy-primary: #0f172a;
+    --navy-secondary: #1e293b;
+    --teal-primary: #0f766e;
+    --teal-hover: #115e59;
+    --teal-light: #ccfbf1;
+    --warm-bg: #f8fafc;
+    --card-border: #e2e8f0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #1e293b;
+    background-color: var(--warm-bg);
+}
+
+.bg-navy {
+    background-color: var(--navy-primary) !important;
+}
+
+.bg-teal {
+    background-color: var(--teal-primary) !important;
+}
+
+.btn-teal {
+    background-color: var(--teal-primary);
+    border-color: var(--teal-primary);
+    color: #ffffff;
+}
+
+.btn-teal:hover {
+    background-color: var(--teal-hover);
+    border-color: var(--teal-hover);
+    color: #ffffff;
+}
+
+.btn-outline-teal {
+    border-color: var(--teal-primary);
+    color: var(--teal-primary);
+}
+
+.btn-outline-teal:hover {
+    background-color: var(--teal-primary);
+    color: #ffffff;
+}
+
+.text-teal {
+    color: var(--teal-primary) !important;
+}
+
+.hover-white:hover {
+    color: #ffffff !important;
+}
+
+/* Card & Container Aesthetics */
+.card {
+    border-color: var(--card-border);
+    border-radius: 0.5rem;
+}
+
+.card-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--card-border);
+    font-weight: 600;
+}
+
+/* Status Badges */
+.badge-status-CONFIRMED { background-color: #0284c7; color: white; }
+.badge-status-MATERIAL_RECEIVED { background-color: #7c3aed; color: white; }
+.badge-status-PROCESSING { background-color: #ea580c; color: white; }
+.badge-status-QUALITY_CHECK { background-color: #d97706; color: white; }
+.badge-status-COMPLETED { background-color: #16a34a; color: white; }
+.badge-status-DISPATCHED { background-color: #0d9488; color: white; }
+.badge-status-DELIVERED { background-color: #059669; color: white; }
+.badge-status-CANCELLED { background-color: #dc2626; color: white; }
+
+.badge-status-SUBMITTED { background-color: #6366f1; color: white; }
+.badge-status-ACCEPTED { background-color: #16a34a; color: white; }
+.badge-status-REJECTED { background-color: #ef4444; color: white; }
+
+/* Timeline Stepper for Production Lot Passport */
+.timeline-wrapper {
+    position: relative;
+    padding-left: 2rem;
+    margin-top: 1.5rem;
+}
+
+.timeline-wrapper::before {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #cbd5e1;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.65rem;
+    top: 0.25rem;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--teal-primary);
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 2px var(--teal-primary);
+}
+
+.timeline-item.passed::before {
+    background: #16a34a;
+    box-shadow: 0 0 0 2px #16a34a;
+}
+
+.timeline-item.rework::before {
+    background: #ea580c;
+    box-shadow: 0 0 0 2px #ea580c;
+}
+
+/* Hero Section */
+.hero-banner {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    padding: 4.5rem 0;
+    border-bottom: 3px solid var(--teal-primary);
+}
+
+/* Metric Counter Cards */
+.metric-card {
+    background: #ffffff;
+    border: 1px solid var(--card-border);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Comparison Table Highlighting */
+.compare-best-price {
+    background-color: #f0fdf4 !important;
+    border-left: 3px solid #22c55e !important;
+}

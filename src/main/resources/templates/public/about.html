@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('About TexSetu')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container py-5 my-4">
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <span class="badge bg-teal mb-2">Our Mission</span>
+                <h1 class="fw-bold mb-3">Organizing Surat's Textile Job-Work Ecosystem</h1>
+                <p class="lead text-secondary">TexSetu ("Textile Bridge") is a specialized B2B marketplace created to bridge the operational gap between fabric traders, clothing brands, and specialized job-work manufacturing units in Surat, Gujarat.</p>
+
+                <h4 class="fw-bold mt-5 mb-3">The Problem Hypothesis</h4>
+                <p class="text-secondary">Textile businesses in hubs like Pandesara, Sachin, and Ring Road manage hundreds of thousands of meters of fabric across fragmented communication channels — phone calls, WhatsApp receipts, paper challans, and manual spreadsheets. Misaligned turnaround estimates, unverified capacity claims, quality disputes, and missing audit trails create costly delays and material waste.</p>
+
+                <h4 class="fw-bold mt-5 mb-3">The TexSetu Approach</h4>
+                <p class="text-secondary">TexSetu introduces a digital workflow engineered specifically for textile job-work:</p>
+                <div class="row g-3 my-2">
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white rounded border">
+                            <h6 class="fw-bold text-teal"><i class="bi bi-shield-check me-2"></i>Capability-Based Discovery</h6>
+                            <p class="small text-secondary mb-0">Search providers by proven machinery, certified GIDC facilities, and realistic daily capacities.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white rounded border">
+                            <h6 class="fw-bold text-teal"><i class="bi bi-table me-2"></i>Quotation Comparison</h6>
+                            <p class="small text-secondary mb-0">Side-by-side matrices comparing unit rates, turnaround days, and delivery terms before commitment.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white rounded border">
+                            <h6 class="fw-bold text-teal"><i class="bi bi-passport me-2"></i>Digital Lot Passport</h6>
+                            <p class="small text-secondary mb-0">Every work order maintains an auditable digital timeline from fabric receipt to final dispatch.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 bg-white rounded border">
+                            <h6 class="fw-bold text-teal"><i class="bi bi-arrow-repeat me-2"></i>Quality & Rework Loops</h6>
+                            <p class="small text-secondary mb-0">Recorded defect inspections trigger explicit rework stages rather than unrecorded verbal disputes.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h4 class="fw-bold mt-5 mb-3">Academic & Startup Profile</h4>
+                <p class="text-secondary">TexSetu is architected using modern enterprise standards (Java 21, Spring Boot 3.3, PostgreSQL, Spring Security 6) to demonstrate a production-ready, cloud-deployable platform suitable for startup incubation under DPIIT Startup India guidelines.</p>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 p-4 sticky-top" style="top: 90px;">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-geo-alt-fill text-teal me-2"></i>Target Geography</h5>
+                    <p class="small text-secondary mb-2"><strong>Primary Hub:</strong> Surat, Gujarat, India</p>
+                    <p class="small text-secondary mb-2"><strong>Industrial Zones:</strong> Pandesara GIDC, Sachin GIDC, Udhna GIDC, Anjana Farm, Khatodara</p>
+                    <p class="small text-secondary mb-3"><strong>Wholesale Markets:</strong> STM, Millennium Market, Raghukul Market</p>
+                    <hr>
+                    <h6 class="fw-bold small text-uppercase text-secondary mb-2">Platform Roles</h6>
+                    <span class="badge bg-primary me-1 mb-1">BUYER</span>
+                    <span class="badge bg-success me-1 mb-1">JOB_WORKER</span>
+                    <span class="badge bg-dark mb-1">ADMIN</span>
+                    <hr>
+                    <a th:href="@{/discovery}" class="btn btn-teal text-white w-100 fw-medium">Explore Verified Units</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

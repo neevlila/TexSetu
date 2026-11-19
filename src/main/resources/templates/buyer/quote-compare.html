@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Compare Quotations')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <!-- Breadcrumb / Header -->
+        <div class="mb-4">
+            <a th:href="@{/buyer/rfqs}" class="text-secondary small text-decoration-none"><i class="bi bi-arrow-left me-1"></i> Back to My RFQs</a>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+                <div>
+                    <span class="text-teal small fw-semibold text-uppercase">Supplier Selection</span>
+                    <h2 class="fw-bold mb-0">Quotation Comparison Matrix</h2>
+                </div>
+                <div>
+                    <span class="badge" th:classappend="'badge-status-' + ${rfq.status}" th:text="'RFQ STATUS: ' + ${rfq.status}">OPEN</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RFQ Summary Card -->
+        <div class="card shadow-sm border-0 mb-4 p-3 bg-white">
+            <div class="row g-3 small">
+                <div class="col-md-3">
+                    <span class="text-muted d-block">RFQ Reference:</span>
+                    <span class="fw-bold font-monospace" th:text="${rfq.rfqNumber}">RFQ-123</span>
+                </div>
+                <div class="col-md-3">
+                    <span class="text-muted d-block">Category:</span>
+                    <span class="fw-bold" th:text="${rfq.category.name}">Dyeing & Processing</span>
+                </div>
+                <div class="col-md-3">
+                    <span class="text-muted d-block">Required Quantity:</span>
+                    <span class="fw-bold text-teal"><span th:text="${rfq.quantity}">0</span> <span th:text="${rfq.unitOfMeasure}">MTS</span></span>
+                </div>
+                <div class="col-md-3">
+                    <span class="text-muted d-block">Target Completion Date:</span>
+                    <span class="fw-bold" th:text="${#temporals.format(rfq.desiredCompletionDate, 'dd MMM yyyy')}">Date</span>
+                </div>
+                <div class="col-12 mt-2 pt-2 border-top">
+                    <span class="text-muted d-block">Job Description & Fabric Specifications:</span>
+                    <p class="mb-0 text-secondary" th:text="${rfq.fabricDescription} + ' — ' + ${rfq.processingRequirements}">Specs</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Concurrency Alert Notice -->
+        <div class="alert alert-info py-2 small d-flex align-items-center mb-4 shadow-xs" th:if="${rfq.status.name() == 'OPEN' || rfq.status.name() == 'QUOTED'}">
+            <i class="bi bi-shield-check text-teal fs-5 me-2"></i>
+            <div>
+                <strong>Atomic Single-Quotation Acceptance Guarantee:</strong>
+                Accepting one quotation will automatically close this RFQ, reject all alternate quotations, and initialize an auditable <strong>Digital Production Lot Passport</strong>.
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="card shadow-sm border-0" th:if="${quotes.size() > 0}">
+            <div class="card-header bg-white py-3">
+                <h5 class="mb-0 fw-bold"><i class="bi bi-table me-2 text-teal"></i>Received Quotations (<span th:text="${quotes.size()}">0</span>)</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Service Provider</th>
+                            <th>Unit Rate</th>
+                            <th>Total Price (INR)</th>
+                            <th>Estimated TAT</th>
+                            <th>Proposed Delivery</th>
+                            <th>MOQ Terms</th>
+                            <th>Status</th>
+                            <th class="text-center">Selection Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="q : ${quotes}" th:classappend="${q.status.name() == 'ACCEPTED'} ? 'table-success' : ''">
+                            <td>
+                                <div class="fw-bold" th:text="${q.jobWorker.businessName}">Radhe Krishna Dyeing</div>
+                                <small class="text-muted"><i class="bi bi-geo-alt me-1"></i> <span th:text="${q.jobWorker.city} + ' (' + ${q.jobWorker.serviceArea} + ')'">Surat</span></small>
+                                <div>
+                                    <span class="badge bg-success" th:if="${q.jobWorker.verificationStatus.name() == 'VERIFIED'}">Verified Unit</span>
+                                    <span class="badge bg-secondary" th:if="${q.jobWorker.verificationStatus.name() == 'PENDING'}">Pending Verification</span>
+                                </div>
+                            </td>
+                            <td class="fw-bold text-teal fs-6">
+                                ₹<span th:text="${q.unitPrice}">0.00</span> / <span th:text="${rfq.unitOfMeasure}">MTS</span>
+                            </td>
+                            <td class="fw-bold fs-5">
+                                ₹<span th:text="${#numbers.formatDecimal(q.totalPrice, 0, 'COMMA', 2, 'POINT')}">0.00</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-dark"><span th:text="${q.estimatedDurationDays}">3</span> Days</span>
+                            </td>
+                            <td th:text="${#temporals.format(q.proposedCompletionDate, 'dd MMM yyyy')}">Date</td>
+                            <td>
+                                <small class="text-secondary" th:text="${q.termsConditions ?: 'Standard unit terms apply'}">Terms</small>
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="'badge-status-' + ${q.status}" th:text="${q.status}">SUBMITTED</span>
+                            </td>
+                            <td class="text-center">
+                                <div th:if="${rfq.status.name() == 'OPEN' || rfq.status.name() == 'QUOTED'}">
+                                    <form th:action="@{/buyer/quotes/{id}/accept(id=${q.id})}" method="post" onsubmit="return confirm('Are you sure you want to accept this quotation? This will create a binding Job Order and close all other quotations.');">
+                                        <button type="submit" class="btn btn-teal text-white btn-sm px-3 fw-medium">
+                                            <i class="bi bi-check2-circle me-1"></i> Accept Quotation
+                                        </button>
+                                    </form>
+                                </div>
+                                <div th:if="${q.status.name() == 'ACCEPTED'}">
+                                    <span class="text-success fw-bold small"><i class="bi bi-check-circle-fill me-1"></i> Accepted & Active Order</span>
+                                </div>
+                                <div th:if="${q.status.name() == 'REJECTED'}">
+                                    <span class="text-muted small">Not Selected</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 p-5 text-center" th:if="${quotes.isEmpty()}">
+            <i class="bi bi-inbox display-4 text-muted mb-2"></i>
+            <h5 class="fw-bold">No quotations received yet for this RFQ</h5>
+            <p class="text-secondary small">Service units in Surat are currently reviewing your processing requirements. Quotations will appear here once submitted.</p>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Complaint Management')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <div class="mb-4">
+            <span class="text-teal small fw-semibold text-uppercase">Dispute Resolution</span>
+            <h2 class="fw-bold mb-0">Marketplace Complaints & Grievances</h2>
+            <p class="text-secondary small">Investigate quality disputes, material shortages, and delays logged by market participants.</p>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Complaint Ref</th>
+                            <th>Order No</th>
+                            <th>Complainant</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Evidence</th>
+                            <th>Status</th>
+                            <th>Resolution Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="c : ${complaints}">
+                            <td class="fw-bold font-monospace" th:text="${c.complaintReference}">CMP-123</td>
+                            <td><span class="font-monospace text-navy" th:text="${c.order.orderNumber}">ORD-123</span></td>
+                            <td>
+                                <div class="fw-semibold" th:text="${c.complainant.fullName}">Complainant</div>
+                                <small class="text-muted" th:text="${c.complainant.email}">email</small>
+                            </td>
+                            <td><span class="badge bg-light text-secondary border" th:text="${c.category}">QUALITY_DEFECT</span></td>
+                            <td class="small text-secondary" style="max-width: 280px;" th:text="${c.description}">Dispute description</td>
+                            <td>
+                                <a th:if="${c.evidenceUrl}" th:href="${c.evidenceUrl}" target="_blank" class="btn btn-sm btn-outline-secondary py-0 small"><i class="bi bi-paperclip me-1"></i> Proof</a>
+                                <span th:if="${c.evidenceUrl == null}" class="text-muted small">None</span>
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="${c.status.name() == 'RESOLVED'} ? 'bg-success' : (${c.status.name() == 'OPEN'} ? 'bg-danger' : 'bg-warning text-dark')" th:text="${c.status}">OPEN</span>
+                            </td>
+                            <td>
+                                <form th:if="${c.status.name() == 'OPEN' || c.status.name() == 'UNDER_REVIEW'}" th:action="@{/admin/complaints/{id}/resolve(id=${c.id})}" method="post" class="d-flex gap-1">
+                                    <input type="text" name="resolutionNotes" class="form-control form-control-sm" placeholder="Resolution notes" required>
+                                    <select name="status" class="form-select form-select-sm" style="width: 120px;">
+                                        <option value="RESOLVED">RESOLVED</option>
+                                        <option value="REJECTED">REJECTED</option>
+                                        <option value="UNDER_REVIEW">REVIEWING</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-sm btn-teal text-white">Save</button>
+                                </form>
+                                <span th:if="${c.status.name() == 'RESOLVED' || c.status.name() == 'REJECTED'}" class="text-muted small">
+                                    Resolved on <span th:text="${#temporals.format(c.resolvedAt, 'dd MMM yyyy')}">Date</span>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr th:if="${complaints.isEmpty()}">
+                            <td colspan="8" class="text-center py-5 text-secondary small">
+                                <i class="bi bi-shield-check display-4 d-block mb-2 text-success"></i>
+                                No active complaints or order disputes found.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

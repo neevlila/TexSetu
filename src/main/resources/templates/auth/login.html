@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Sign In')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container py-5 my-auto">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-sm border-0 p-4 p-md-5">
+                    <div class="text-center mb-4">
+                        <span class="badge bg-teal p-2 rounded-circle fs-4 mb-2"><i class="bi bi-person-fill"></i></span>
+                        <h3 class="fw-bold">Sign In to TexSetu</h3>
+                        <p class="text-secondary small">Access your buyer or job-worker manufacturing portal</p>
+                    </div>
+
+                    <div th:if="${param.error}" class="alert alert-danger small py-2">
+                        <i class="bi bi-exclamation-circle-fill me-1"></i> Invalid email or password. Please verify and try again.
+                    </div>
+                    <div th:if="${param.logout}" class="alert alert-info small py-2">
+                        <i class="bi bi-info-circle-fill me-1"></i> You have been safely logged out.
+                    </div>
+
+                    <form th:action="@{/auth/login-process}" method="post">
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Business Email Address</label>
+                            <input type="email" id="emailInput" name="username" class="form-control" placeholder="name@business.com" required autofocus>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-semibold">Password</label>
+                            <input type="password" id="passwordInput" name="password" class="form-control" placeholder="Enter your password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-teal text-white w-100 py-2 fw-semibold mt-2">Sign In</button>
+                    </form>
+
+                    <!-- Quick Demo Credential Pills for University Demonstration -->
+                    <div class="mt-4 pt-3 border-top">
+                        <span class="d-block small text-muted text-center mb-2 fw-semibold text-uppercase">Demonstration Accounts</span>
+                        <div class="d-flex flex-column gap-2">
+                            <button type="button" class="btn btn-outline-primary btn-sm text-start" onclick="fillDemo('meera.fashions@texsetu.demo', 'Password123!')">
+                                <i class="bi bi-bag me-1"></i> <strong>Buyer:</strong> Meera Fashion House (Surat Trader)
+                            </button>
+                            <button type="button" class="btn btn-outline-success btn-sm text-start" onclick="fillDemo('radhe.dyeing@texsetu.demo', 'Password123!')">
+                                <i class="bi bi-droplet-half me-1"></i> <strong>Job Worker:</strong> Radhe Krishna Dyeing (Pandesara)
+                            </button>
+                            <button type="button" class="btn btn-outline-dark btn-sm text-start" onclick="fillDemo('admin@texsetu.com', 'Password123!')">
+                                <i class="bi bi-shield-lock me-1"></i> <strong>Admin:</strong> TexSetu Master Admin
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4 small">
+                        Don't have an account? <a th:href="@{/auth/register}" class="text-teal fw-semibold">Register here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function fillDemo(email, pass) {
+            document.getElementById('emailInput').value = email;
+            document.getElementById('passwordInput').value = pass;
+        }
+    </script>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

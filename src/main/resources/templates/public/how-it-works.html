@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('How It Works')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+
+    <main class="container py-5 my-4">
+        <div class="text-center mb-5">
+            <span class="badge bg-teal mb-2">Step-by-Step Workflow</span>
+            <h1 class="fw-bold">How TexSetu Operates</h1>
+            <p class="text-secondary mx-auto" style="max-width: 600px;">A transparent, transactional workflow designed for textile traders and specialized job-work units.</p>
+        </div>
+
+        <!-- Buyer Flow -->
+        <div class="card shadow-sm border-0 mb-5 p-4">
+            <h4 class="fw-bold text-navy mb-4"><i class="bi bi-cart-check-fill text-teal me-2"></i>For Textile Traders & Fabric Buyers</h4>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded h-100 border">
+                        <span class="badge bg-navy text-white mb-2">Step 1</span>
+                        <h6 class="fw-bold">Post an RFQ</h6>
+                        <p class="small text-secondary mb-0">Specify processing category (dyeing, printing, stitching), fabric specs, quantity, and required delivery date.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded h-100 border">
+                        <span class="badge bg-navy text-white mb-2">Step 2</span>
+                        <h6 class="fw-bold">Compare Quotations</h6>
+                        <p class="small text-secondary mb-0">Receive competitive bids from verified Surat units. Compare unit rate, turnaround days, and minimum quantities.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded h-100 border">
+                        <span class="badge bg-navy text-white mb-2">Step 3</span>
+                        <h6 class="fw-bold">Accept & Track</h6>
+                        <p class="small text-secondary mb-0">Accept one quotation. A Digital Production Lot Passport is initialized to track material arrival and processing.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded h-100 border">
+                        <span class="badge bg-navy text-white mb-2">Step 4</span>
+                        <h6 class="fw-bold">Inspect & Sign Off</h6>
+                        <p class="small text-secondary mb-0">Review quality reports, approve completed work or request rework if defects occur, and confirm final delivery.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Worker Flow -->
+        <div class="card shadow-sm border-0 p-4">
+            <h4 class="fw-bold text-navy mb-4"><i class="bi bi-tools text-primary me-2"></i>For Specialized Job-Work Units</h4>
+            <div class="row g-4">
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded h-100 border">
+                        <span class="badge bg-teal text-white mb-2">Step 1</span>
+                        <h6 class="fw-bold">List Capabilities</h6>
+                        <p class="small text-secondary mb-0">Showcase your machinery (stenters, jet dyeing, digital printers), MOQ, turnaround days, and indicative rates.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded h-100 border">
+                        <span class="badge bg-teal text-white mb-2">Step 2</span>
+                        <h6 class="fw-bold">Bid on Market RFQs</h6>
+                        <p class="small text-secondary mb-0">Browse open enquiries from reputable traders and submit competitive quotations directly.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded h-100 border">
+                        <span class="badge bg-teal text-white mb-2">Step 3</span>
+                        <h6 class="fw-bold">Update Milestones</h6>
+                        <p class="small text-secondary mb-0">Acknowledge fabric receipt, update production stages (processing, quality check), and upload evidence.</p>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-light rounded h-100 border">
+                        <span class="badge bg-teal text-white mb-2">Step 4</span>
+                        <h6 class="fw-bold">Deliver & Build Trust</h6>
+                        <p class="small text-secondary mb-0">Dispatch finished goods, resolve any rework requests smoothly, and accumulate transaction-linked reviews.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

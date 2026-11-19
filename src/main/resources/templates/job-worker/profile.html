@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Unit Profile & Capacity')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container py-4 my-2">
+        <div class="row g-4">
+            <!-- Left Info Column -->
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0 p-4 mb-4 bg-white">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <div>
+                            <span class="text-teal small fw-semibold text-uppercase">Manufacturing Unit Profile</span>
+                            <h3 class="fw-bold mb-0" th:text="${worker.businessName}">Business Name</h3>
+                        </div>
+                        <div>
+                            <span class="badge bg-success p-2" th:if="${worker.verificationStatus.name() == 'VERIFIED'}">
+                                <i class="bi bi-patch-check-fill me-1"></i> Verified Unit
+                            </span>
+                            <span class="badge bg-secondary p-2" th:if="${worker.verificationStatus.name() == 'PENDING'}">
+                                <i class="bi bi-hourglass me-1"></i> Verification Pending
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Capacity Management Form -->
+                    <form th:action="@{/job-worker/profile/update-capacity}" method="post">
+                        <h5 class="fw-bold text-navy mb-3">Update Daily Capacity & Machinery</h5>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Indicative Capacity (Meters or Pieces/Day) *</label>
+                                <input type="number" step="100" name="capacityMetersPerDay" th:value="${worker.indicativeCapacityMetersPerDay}" class="form-control" required>
+                                <small class="text-muted">Enter realistic operating capacity. Marked with last-updated timestamp.</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Standard Turnaround Days *</label>
+                                <input type="number" name="turnaroundDays" th:value="${worker.turnaroundDays}" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Installed Machinery & Technical Equipment *</label>
+                                <textarea name="machineryDetails" class="form-control" rows="3" th:text="${worker.machineryDetails}" placeholder="e.g. 4x Sclavos Soft Flow Jet Dyeing, 2x Monforts 8-Chamber Stenters, Kyocera Digital Printing" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center pt-2">
+                            <span class="text-muted small">Capacity last updated: <span th:text="${#temporals.format(worker.capacityLastUpdated, 'dd MMM yyyy HH:mm')}">Date</span></span>
+                            <button type="submit" class="btn btn-teal text-white fw-medium btn-sm px-4">Save Capacity Updates</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Verification Column -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 p-4 bg-white">
+                    <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-shield-check text-teal me-2"></i>Business Verification</h5>
+
+                    <div class="mb-3">
+                        <span class="text-muted small d-block">Current Verification Status:</span>
+                        <span class="badge fs-6 mt-1" th:classappend="${worker.verificationStatus.name() == 'VERIFIED'} ? 'bg-success' : 'bg-secondary'" th:text="${worker.verificationStatus}">PENDING</span>
+                    </div>
+
+                    <div class="mb-3" th:if="${worker.verificationNotes}">
+                        <span class="text-muted small d-block">Verification Review Notes:</span>
+                        <p class="small text-secondary bg-light p-2 rounded mb-0 mt-1" th:text="${worker.verificationNotes}">Notes</p>
+                    </div>
+
+                    <div th:if="${worker.verificationStatus.name() != 'VERIFIED'}">
+                        <hr>
+                        <h6 class="fw-bold small text-navy mb-2">Request Admin Verification</h6>
+                        <p class="small text-secondary">Verified units appear with a verified badge in buyer searches and rank higher in discovery results.</p>
+
+                        <form th:action="@{/job-worker/profile/request-verification}" method="post">
+                            <div class="mb-3">
+                                <label class="form-label small fw-semibold">Submission Notes / GST Registration Reference</label>
+                                <textarea name="notes" class="form-control" rows="2" placeholder="State your GIDC shed registration details or certificate references for verification"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-outline-teal btn-sm w-100 fw-medium">
+                                <i class="bi bi-send me-1"></i> Submit Verification Request
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top small">
+                        <span class="fw-semibold text-muted d-block mb-1">Catalog Capabilities Management:</span>
+                        <a th:href="@{/job-worker/capabilities}" class="btn btn-outline-secondary btn-sm w-100">
+                            <i class="bi bi-list-stars me-1"></i> Manage Service Catalog Offerings
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

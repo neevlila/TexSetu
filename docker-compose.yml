@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  postgres:
+    image: postgres:16-alpine
+    container_name: texsetu-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: texsetu
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - texsetu_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d texsetu"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # TexSetu Spring Boot Application Service
+  texsetu-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: texsetu-app
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/texsetu
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgrespassword
+      PORT: 8080
+      STORAGE_TYPE: local
+      LOCAL_UPLOAD_DIR: /app/uploads
+    volumes:
+      - texsetu_uploads:/app/uploads
+
+volumes:
+  texsetu_pgdata:
+  texsetu_uploads:

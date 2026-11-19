@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Job Orders')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="text-teal small fw-semibold text-uppercase">Manufacturing Execution</span>
+                <h2 class="fw-bold mb-0">Job-Work Orders & Production Lot Passports</h2>
+            </div>
+            <div>
+                <a th:href="@{/buyer/rfqs/new}" class="btn btn-teal text-white fw-medium shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> New Job Order RFQ
+                </a>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light small">
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Job Worker Unit</th>
+                            <th>Category</th>
+                            <th>Agreed Quantity</th>
+                            <th>Agreed Value (INR)</th>
+                            <th>Expected Delivery</th>
+                            <th>Lot Stage</th>
+                            <th>Order Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="order : ${orders}">
+                            <td class="fw-bold font-monospace" th:text="${order.orderNumber}">ORD-123</td>
+                            <td>
+                                <div class="fw-semibold" th:text="${order.jobWorker.businessName}">Radhe Krishna Dyeing</div>
+                                <small class="text-muted"><i class="bi bi-geo-alt me-1"></i> <span th:text="${order.jobWorker.city}">Surat</span></small>
+                            </td>
+                            <td><span th:text="${order.agreedQuantity}">0</span> <span th:text="${order.unitOfMeasure}">MTS</span></td>
+                            <td class="fw-bold text-teal">₹<span th:text="${#numbers.formatDecimal(order.agreedPrice, 0, 'COMMA', 2, 'POINT')}">0.00</span></td>
+                            <td th:text="${#temporals.format(order.expectedCompletionDate, 'dd MMM yyyy')}">Date</td>
+                            <td>
+                                <span class="badge bg-light text-navy border" th:text="${order.productionLot != null ? order.productionLot.currentStage : 'INITIALIZING'}">Stage</span>
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="'badge-status-' + ${order.currentStatus}" th:text="${order.currentStatus}">CONFIRMED</span>
+                            </td>
+                            <td>
+                                <a th:href="@{/buyer/orders/{id}(id=${order.id})}" class="btn btn-sm btn-teal text-white">
+                                    <i class="bi bi-passport me-1"></i> Lot Passport
+                                </a>
+                            </td>
+                        </tr>
+                        <tr th:if="${orders.isEmpty()}">
+                            <td colspan="9" class="text-center py-5 text-secondary small">
+                                <i class="bi bi-box display-4 d-block mb-2 text-muted"></i>
+                                No job-work orders created yet. Accept a quotation to initialize an order and its production lot passport.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

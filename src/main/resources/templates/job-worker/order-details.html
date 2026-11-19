@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Work Order & Production Lot Passport')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <!-- Top Navigation -->
+        <div class="mb-4">
+            <a th:href="@{/job-worker/orders}" class="text-secondary small text-decoration-none"><i class="bi bi-arrow-left me-1"></i> Back to Work Orders</a>
+            <div class="d-flex flex-wrap justify-content-between align-items-center mt-2 gap-3">
+                <div>
+                    <span class="badge bg-teal me-2"><i class="bi bi-gear-fill me-1"></i> Factory Unit Operations</span>
+                    <h2 class="fw-bold mb-0 mt-1 font-monospace" th:text="${order.orderNumber}">ORD-SRT-2026-001</h2>
+                    <small class="text-secondary">Digital Lot Passport: <span class="fw-bold font-monospace text-navy" th:text="${lot != null ? lot.lotNumber : 'LOT INITIALIZING'}">LOT-123</span></small>
+                </div>
+                <div class="d-flex gap-2">
+                    <!-- Update Stage Trigger -->
+                    <button type="button" class="btn btn-teal text-white fw-medium" data-bs-toggle="modal" data-bs-target="#stageModal" th:if="${order.currentStatus.name() != 'DELIVERED' && order.currentStatus.name() != 'CANCELLED'}">
+                        <i class="bi bi-arrow-repeat me-1"></i> Update Production Stage
+                    </button>
+
+                    <!-- Material Reconciliation Trigger -->
+                    <button type="button" class="btn btn-outline-primary fw-medium" data-bs-toggle="modal" data-bs-target="#reconcileModal" th:if="${order.currentStatus.name() == 'CONFIRMED' || order.currentStatus.name() == 'MATERIAL_RECEIVED'}">
+                        <i class="bi bi-rulers me-1"></i> Reconcile Received Material
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Column: Order Specs & Reconciliation -->
+            <div class="col-lg-5">
+                <div class="card shadow-sm border-0 p-4 mb-4 bg-white">
+                    <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-file-text text-teal me-2"></i>Job Specifications</h5>
+                    <div class="small">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Buyer Company:</span>
+                            <span class="fw-bold" th:text="${order.buyer.fullName}">Buyer Name</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Buyer Phone:</span>
+                            <span class="fw-bold" th:text="${order.buyer.phoneNumber}">+91 98250 XXXXX</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Processing Service:</span>
+                            <span class="fw-semibold text-teal" th:text="${order.category.name}">Category</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Current Order Status:</span>
+                            <span class="badge" th:classappend="'badge-status-' + ${order.currentStatus}" th:text="${order.currentStatus}">PROCESSING</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Agreed Order Price:</span>
+                            <span class="fw-bold fs-6">₹<span th:text="${#numbers.formatDecimal(order.agreedPrice, 0, 'COMMA', 2, 'POINT')}">0.00</span></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Due Delivery Date:</span>
+                            <span class="fw-semibold" th:text="${#temporals.format(order.expectedCompletionDate, 'dd MMM yyyy')}">Date</span>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold mt-4 mb-3 border-bottom pb-2 text-navy"><i class="bi bi-rulers text-teal me-2"></i>Quantity & Material Reconciliation</h6>
+                    <div class="p-3 bg-light rounded border small">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Buyer Submitted Quantity:</span>
+                            <span class="fw-bold"><span th:text="${lot.originalSubmittedQuantity}">0</span> <span th:text="${order.unitOfMeasure}">MTS</span></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Unit Physically Received:</span>
+                            <span class="fw-bold text-primary"><span th:text="${lot.receivedQuantity}">0</span> <span th:text="${order.unitOfMeasure}">MTS</span></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Completed Passed Quantity:</span>
+                            <span class="fw-bold text-success"><span th:text="${lot.quantityCompleted}">0</span> <span th:text="${order.unitOfMeasure}">MTS</span></span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted">Recorded Defect / Waste:</span>
+                            <span class="fw-bold text-danger"><span th:text="${lot.quantityRejectedWaste}">0</span> <span th:text="${order.unitOfMeasure}">MTS</span></span>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-2">
+                        <span class="text-muted small d-block mb-1">Processing Instructions & Shade Details:</span>
+                        <p class="small text-secondary mb-0 bg-light p-2 rounded" th:text="${order.rfq.processingRequirements}">Requirements</p>
+                    </div>
+                </div>
+
+                <!-- Quality Inspection Outcomes -->
+                <div class="card shadow-sm border-0 p-4 bg-white">
+                    <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-clipboard2-check text-teal me-2"></i>Buyer Quality Inspections</h5>
+                    <div class="list-group list-group-flush" th:if="${inspections.size() > 0}">
+                        <div class="list-group-item px-0 py-3" th:each="ins : ${inspections}">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="badge" th:classappend="${ins.result.name() == 'ACCEPTED'} ? 'bg-success' : (${ins.result.name() == 'REWORK_REQUIRED'} ? 'bg-warning text-dark' : 'bg-danger')" th:text="${ins.result}">RESULT</span>
+                                <small class="text-muted" th:text="${#temporals.format(ins.inspectionDate, 'dd MMM yyyy HH:mm')}">Date</small>
+                            </div>
+                            <div class="small mt-2">
+                                <div><strong>Inspected:</strong> <span th:text="${ins.quantityInspected}">0</span> &bull; <strong>Accepted:</strong> <span th:text="${ins.acceptedQuantity}">0</span></div>
+                                <div class="text-secondary mt-1" th:text="${ins.inspectionComments}">Comments</div>
+                                <div class="text-danger mt-1 small" th:if="${ins.defectDetails}"><i class="bi bi-exclamation-circle me-1"></i> <strong>Defect Notes:</strong> <span th:text="${ins.defectDetails}">Details</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-secondary small mb-0" th:if="${inspections.isEmpty()}">No quality inspections recorded by buyer yet.</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Timeline Stepper -->
+            <div class="col-lg-7">
+                <div class="card shadow-sm border-0 p-4 bg-white">
+                    <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-3">
+                        <div>
+                            <h5 class="fw-bold mb-0"><i class="bi bi-clock-history text-teal me-2"></i>Auditable Production Event Ledger</h5>
+                            <small class="text-secondary">Official milestone timeline stored in the Lot Passport</small>
+                        </div>
+                        <span class="badge bg-light text-secondary border"><span th:text="${timeline.size()}">0</span> Events</span>
+                    </div>
+
+                    <div class="timeline-wrapper">
+                        <div class="timeline-item" th:each="event : ${timeline}" th:classappend="${event.eventType.contains('ACCEPTED')} ? 'passed' : (${event.eventType.contains('REWORK')} ? 'rework' : '')">
+                            <div class="d-flex justify-content-between align-items-baseline mb-1">
+                                <h6 class="fw-bold mb-0 text-navy" th:text="${event.eventType}">EVENT</h6>
+                                <small class="text-muted" th:text="${#temporals.format(event.eventTimestamp, 'dd MMM yyyy, HH:mm')}">Date Time</small>
+                            </div>
+                            <div class="small mb-1">
+                                <span class="badge bg-light text-secondary border me-1">Actor: <span th:text="${event.actorRole}">ROLE</span> &bull; <span th:text="${event.actor.fullName}">Name</span></span>
+                                <span class="badge bg-teal bg-opacity-10 text-teal" th:if="${event.newState}" th:text="'Stage: ' + ${event.newState}">STAGE</span>
+                            </div>
+                            <p class="text-secondary small mb-1" th:text="${event.description}">Description</p>
+                            <div th:if="${event.attachmentUrl}">
+                                <a th:href="${event.attachmentUrl}" target="_blank" class="btn btn-sm btn-outline-secondary py-0 small"><i class="bi bi-paperclip me-1"></i> Attachment Proof</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Material Reconciliation Modal -->
+        <div class="modal fade" id="reconcileModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{/job-worker/orders/{id}/reconcile-material(id=${order.id})}" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold"><i class="bi bi-rulers text-teal me-2"></i>Reconcile Received Material</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body small">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Physically Measured Quantity Received *</label>
+                                <input type="number" step="0.01" name="receivedQuantity" th:value="${lot.originalSubmittedQuantity}" class="form-control" required>
+                                <small class="text-muted">Enter verified yardage/weight received at factory gate in <span th:text="${order.unitOfMeasure}">MTS</span>.</small>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Reconciliation Remarks</label>
+                                <textarea name="notes" class="form-control" rows="2" placeholder="e.g. 5 rolls received on delivery challan #884. Rolls clean and tagged."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-teal text-white btn-sm fw-medium">Save Reconciled Qty</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Update Stage Modal -->
+        <div class="modal fade" id="stageModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form th:action="@{/job-worker/orders/{id}/update-stage(id=${order.id})}" th:object="${updateDto}" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h5 class="modal-title fw-bold"><i class="bi bi-arrow-repeat text-teal me-2"></i>Update Production Stage</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body small">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Next Order Status *</label>
+                                <select th:field="*{nextStatus}" class="form-select" required>
+                                    <option value="MATERIAL_RECEIVED" th:if="${order.currentStatus.name() == 'CONFIRMED'}">MATERIAL_RECEIVED - Raw Fabric Received at Unit</option>
+                                    <option value="PROCESSING" th:if="${order.currentStatus.name() == 'MATERIAL_RECEIVED' || order.currentStatus.name() == 'QUALITY_CHECK'}">PROCESSING - In Machine Processing / Rework</option>
+                                    <option value="QUALITY_CHECK" th:if="${order.currentStatus.name() == 'PROCESSING'}">QUALITY_CHECK - Finished & Ready for Buyer Quality Inspection</option>
+                                    <option value="DISPATCHED" th:if="${order.currentStatus.name() == 'COMPLETED'}">DISPATCHED - Dispatched to Buyer Delivery Address</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Stage Name / Code *</label>
+                                <input type="text" th:field="*{stageName}" class="form-control" placeholder="e.g. JET_DYEING_STAGE_2, STITCHING_COMPLETE, STEAM_IRONED" required>
+                            </div>
+                            <div class="row g-2 mb-3">
+                                <div class="col-6">
+                                    <label class="form-label fw-semibold">Completed Quantity</label>
+                                    <input type="number" step="0.01" th:field="*{completedQuantity}" class="form-control" placeholder="Meters / Pcs">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label fw-semibold">Defect / Waste Quantity</label>
+                                    <input type="number" step="0.01" th:field="*{rejectedWasteQuantity}" class="form-control" placeholder="Meters / Pcs">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Milestone Description & Notes *</label>
+                                <textarea th:field="*{description}" class="form-control" rows="2" placeholder="Describe the production activity, machine lot number, or dispatch vehicle" required></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">Supporting Photo Evidence Upload</label>
+                                <input type="file" th:field="*{attachment}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-teal text-white btn-sm fw-medium">Record Milestone</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>

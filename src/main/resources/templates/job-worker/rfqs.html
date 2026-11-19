@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Market RFQs')}"></head>
+<body class="bg-light d-flex flex-column min-vh-100">
+    <div th:replace="~{fragments/layout :: navbar}"></div>
+    <div th:replace="~{fragments/layout :: alerts}"></div>
+
+    <main class="container-fluid px-lg-5 py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <span class="text-teal small fw-semibold text-uppercase">Market Opportunities</span>
+                <h2 class="fw-bold mb-0">Open Requests for Quotation (RFQs)</h2>
+                <small class="text-secondary">Enquiries submitted by verified buyers and clothing traders</small>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="card shadow-sm border-0 mb-4 p-3 bg-white">
+            <form th:action="@{/job-worker/rfqs}" method="get" class="row g-3 align-items-center">
+                <div class="col-md-6">
+                    <select name="categoryId" class="form-select">
+                        <option value="">All Processing Categories</option>
+                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}" th:selected="${cat.id == selectedCategoryId}">Category</option>
+                    </select>
+                </div>
+                <div class="col-md-6 d-flex gap-2">
+                    <button type="submit" class="btn btn-teal text-white flex-grow-1"><i class="bi bi-funnel me-1"></i> Filter Opportunities</button>
+                    <a th:href="@{/job-worker/rfqs}" class="btn btn-outline-secondary"><i class="bi bi-arrow-counterclockwise"></i></a>
+                </div>
+            </form>
+        </div>
+
+        <!-- RFQs List -->
+        <div class="row g-4" th:if="${rfqs.size() > 0}">
+            <div class="col-lg-6" th:each="rfq : ${rfqs}">
+                <div class="card h-100 shadow-sm border-0 p-4 bg-white">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <span class="badge bg-light text-secondary border me-1" th:text="${rfq.category.name}">Category</span>
+                            <h5 class="fw-bold text-navy mt-1 mb-0" th:text="${rfq.title}">RFQ Title</h5>
+                        </div>
+                        <span class="badge bg-dark font-monospace" th:text="${rfq.rfqNumber}">RFQ-123</span>
+                    </div>
+
+                    <p class="small text-secondary mb-3 mt-2" th:text="${rfq.fabricDescription}">Fabric specs</p>
+
+                    <div class="p-3 bg-light rounded mb-3 small">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted"><i class="bi bi-box me-1"></i> Required Quantity:</span>
+                            <span class="fw-bold text-teal"><span th:text="${rfq.quantity}">0</span> <span th:text="${rfq.unitOfMeasure}">MTS</span></span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted"><i class="bi bi-calendar-event me-1"></i> Desired Delivery Date:</span>
+                            <span class="fw-semibold" th:text="${#temporals.format(rfq.desiredCompletionDate, 'dd MMM yyyy')}">Date</span>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <span class="text-muted"><i class="bi bi-person me-1"></i> Buyer Company:</span>
+                            <span class="fw-semibold" th:text="${rfq.buyer.businessProfile != null ? rfq.buyer.businessProfile.businessName : rfq.buyer.fullName}">Buyer</span>
+                        </div>
+                    </div>
+
+                    <div class="small mb-3">
+                        <span class="fw-semibold text-muted d-block">Processing & Shade Instructions:</span>
+                        <p class="text-secondary mb-0 small" th:text="${rfq.processingRequirements}">Requirements</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
+                        <span class="text-muted small">Posted: <span th:text="${#temporals.format(rfq.createdAt, 'dd MMM yyyy')}">Date</span></span>
+                        <a th:href="@{/job-worker/rfqs/{id}/quote(id=${rfq.id})}" class="btn btn-teal text-white btn-sm px-3 fw-medium">
+                            <i class="bi bi-tag me-1"></i> Submit Quotation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 p-5 text-center" th:if="${rfqs.isEmpty()}">
+            <i class="bi bi-inbox display-4 text-muted mb-2"></i>
+            <h5 class="fw-bold">No open RFQs matching your criteria</h5>
+            <p class="text-secondary small">New buyer requisitions will appear here as soon as they are submitted.</p>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/layout :: footer}"></div>
+</body>
+</html>
