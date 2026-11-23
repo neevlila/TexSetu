@@ -48,7 +48,9 @@ public class GlobalExceptionHandler {
     public String handleGenericException(Exception ex, Model model) {
         log.error("Unhandled exception: ", ex);
         model.addAttribute("errorTitle", "System Error");
-        model.addAttribute("errorMessage", "An unexpected error occurred while processing your request. Please try again or contact support.");
+        model.addAttribute("errorMessage", ex.getMessage() != null && !ex.getMessage().isBlank()
+                ? ex.getMessage()
+                : "An unexpected error occurred while processing your request. Please try again or contact support.");
         return "error/custom-error";
     }
 }

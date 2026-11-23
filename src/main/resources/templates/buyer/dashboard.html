@@ -138,7 +138,7 @@
                             <td class="fw-bold font-monospace" th:text="${order.orderNumber}">ORD-123</td>
                             <td th:text="${order.jobWorker.businessName}">Radhe Krishna Dyeing</td>
                             <td><span th:text="${order.agreedQuantity}">0</span> <span th:text="${order.unitOfMeasure}">MTS</span></td>
-                            <td class="fw-bold text-teal">₹<span th:text="${#numbers.formatDecimal(order.agreedPrice, 0, 'COMMA', 2, 'POINT')}">0.00</span></td>
+                            <td class="fw-bold text-teal">₹<span th:text="${order.agreedPrice != null ? #numbers.formatDecimal(order.agreedPrice, 0, 'COMMA', 2, 'POINT') : '0.00'}">0.00</span></td>
                             <td>
                                 <span class="badge bg-light text-navy border" th:text="${order.productionLot != null ? order.productionLot.currentStage : 'INITIALIZING'}">Stage</span>
                             </td>
