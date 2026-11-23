@@ -108,6 +108,9 @@ public class AdminService {
     public void toggleUserAccountStatus(Long userId, AccountStatus status) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        if (user.getRole() == Role.ADMIN) {
+            throw new IllegalArgumentException("Cannot modify account status of an Administrator.");
+        }
         user.setAccountStatus(status);
         userRepository.save(user);
         log.info("Toggled account status for user {} to {}", user.getEmail(), status);

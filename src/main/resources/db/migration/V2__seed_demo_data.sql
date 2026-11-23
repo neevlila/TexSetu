@@ -12,16 +12,18 @@ INSERT INTO service_categories (id, code, name, description, active) VALUES
 (3, 'STITCH_FINISHING', 'Garment Stitching and Finishing', 'Industrial sewing, flatlock/overlock stitching, button-holing, industrial steam pressing, and export packing.', TRUE);
 
 -- 2. SEED USERS
--- Password for all is Password123!
--- BCrypt: $2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.
+-- Password for all demo accounts is Password123!
+-- BCrypt for Password123! : $2a$10$4/8CDD1/AlLNAC2bU.CB7u93XwSICEWKRL4xmf7bKarphCE6tGC8K
+-- Admin Password is Admin@TexSetu2026!
+-- BCrypt for Admin@TexSetu2026! : $2a$10$KsU.o4jHpXgJRy7H.hN8uuf5YHfIRHVatx6OZc8WTyTHE3Ad0f26S
 INSERT INTO users (id, email, password_hash, full_name, phone_number, role, account_status) VALUES
-(1, 'admin@texsetu.com', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'TexSetu Master Admin', '+91 98250 11000', 'ADMIN', 'ACTIVE'),
-(2, 'radhe.dyeing@texsetu.demo', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'Rameshchandra Patel', '+91 98251 22334', 'JOB_WORKER', 'ACTIVE'),
-(3, 'surat.digital@texsetu.demo', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'Ketanbhai Shah', '+91 98252 33445', 'JOB_WORKER', 'ACTIVE'),
-(4, 'omkar.garments@texsetu.demo', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'Jignesh Mewada', '+91 98253 44556', 'JOB_WORKER', 'ACTIVE'),
-(5, 'ambica.unverified@texsetu.demo', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'Pravinbhai Solanki', '+91 98254 55667', 'JOB_WORKER', 'ACTIVE'),
-(6, 'meera.fashions@texsetu.demo', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'Meera Singhania', '+91 98790 66778', 'BUYER', 'ACTIVE'),
-(7, 'vandana.fabrics@texsetu.demo', '$2a$10$EblZqNptyYvcLm/VwDCVAuBjzZOI7khzdyGPBr08PpIi0na624b8.', 'Sureshchandra Agarwal', '+91 98791 77889', 'BUYER', 'ACTIVE');
+(1, 'admin@texsetu.com', '$2a$10$KsU.o4jHpXgJRy7H.hN8uuf5YHfIRHVatx6OZc8WTyTHE3Ad0f26S', 'TexSetu Master Admin', '+91 98250 11000', 'ADMIN', 'ACTIVE'),
+(2, 'radhe.dyeing@texsetu.demo', '$2a$10$4/8CDD1/AlLNAC2bU.CB7u93XwSICEWKRL4xmf7bKarphCE6tGC8K', 'Rameshchandra Patel', '+91 98251 22334', 'JOB_WORKER', 'ACTIVE'),
+(3, 'surat.digital@texsetu.demo', '$2a$10$4/8CDD1/AlLNAC2bU.CB7u93XwSICEWKRL4xmf7bKarphCE6tGC8K', 'Ketanbhai Shah', '+91 98252 33445', 'JOB_WORKER', 'ACTIVE'),
+(4, 'omkar.garments@texsetu.demo', '$2a$10$4/8CDD1/AlLNAC2bU.CB7u93XwSICEWKRL4xmf7bKarphCE6tGC8K', 'Jignesh Mewada', '+91 98253 44556', 'JOB_WORKER', 'ACTIVE'),
+(5, 'ambica.unverified@texsetu.demo', '$2a$10$4/8CDD1/AlLNAC2bU.CB7u93XwSICEWKRL4xmf7bKarphCE6tGC8K', 'Pravinbhai Solanki', '+91 98254 55667', 'JOB_WORKER', 'ACTIVE'),
+(6, 'meera.fashions@texsetu.demo', '$2a$10$4/8CDD1/AlLNAC2bU.CB7u93XwSICEWKRL4xmf7bKarphCE6tGC8K', 'Meera Singhania', '+91 98790 66778', 'BUYER', 'ACTIVE'),
+(7, 'vandana.fabrics@texsetu.demo', '$2a$10$4/8CDD1/AlLNAC2bU.CB7u93XwSICEWKRL4xmf7bKarphCE6tGC8K', 'Sureshchandra Agarwal', '+91 98791 77889', 'BUYER', 'ACTIVE');
 
 -- 3. SEED BUSINESS PROFILES
 INSERT INTO business_profiles (user_id, business_name, business_type, gst_number, panNumber, address, city, state, pincode, contact_person, contact_phone, contact_email) VALUES
@@ -56,3 +58,13 @@ INSERT INTO rfqs (id, rfq_number, buyer_id, category_id, title, fabric_descripti
 -- 7. SEED SAMPLE QUOTATIONS
 INSERT INTO quotations (id, quote_number, rfq_id, job_worker_id, unit_price, total_price, min_quantity_conditions, estimated_duration_days, proposed_completion_date, terms_conditions, validity_date, additional_notes, status) VALUES
 (1, 'QUO-2026-001', 1, 2, 45.00, 112500.00, 2000.0, 4, CURRENT_DATE + INTERVAL '6' DAY, 'Payment 30% advance on material receipt, balance upon quality approval. Waste tolerance +/- 2%.', CURRENT_DATE + INTERVAL '5' DAY, 'We have running Kyocera machines and can start lot immediately upon grey roll delivery.', 'SUBMITTED');
+
+-- 8. SYNCHRONIZE ALL SEQUENCES WITH SEEDED PRIMARY KEYS
+SELECT setval('users_id_seq', (SELECT MAX(id) FROM users));
+SELECT setval('business_profiles_id_seq', (SELECT MAX(id) FROM business_profiles));
+SELECT setval('job_worker_profiles_id_seq', (SELECT MAX(id) FROM job_worker_profiles));
+SELECT setval('service_categories_id_seq', (SELECT MAX(id) FROM service_categories));
+SELECT setval('service_capabilities_id_seq', (SELECT MAX(id) FROM service_capabilities));
+SELECT setval('rfqs_id_seq', (SELECT MAX(id) FROM rfqs));
+SELECT setval('quotations_id_seq', (SELECT MAX(id) FROM quotations));
+

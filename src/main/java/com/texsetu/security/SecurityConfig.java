@@ -31,14 +31,6 @@ public class SecurityConfig {
     }
 
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
@@ -83,8 +75,7 @@ public class SecurityConfig {
                         "/images/**",
                         "/uploads/**",
                         "/actuator/health",
-                        "/error/403",
-                        "/h2-console/**"
+                        "/error/**"
                 ).permitAll()
                 .requestMatchers("/buyer/**").hasAnyRole(Role.BUYER.name(), Role.ADMIN.name())
                 .requestMatchers("/job-worker/**").hasAnyRole(Role.JOB_WORKER.name(), Role.ADMIN.name())
