@@ -38,17 +38,19 @@ BEGIN
                 raw_user_meta_data = jsonb_build_object('full_name', NEW.full_name, 'role', NEW.role, 'texsetu_id', NEW.id),
                 updated_at = NOW()
             WHERE email = NEW.email;
+        ELSIF (TG_OP = 'DELETE') THEN
+            DELETE FROM auth.users WHERE email = OLD.email;
         END IF;
     EXCEPTION WHEN OTHERS THEN
         -- Defensive pass: Never block application registrations if Supabase Auth schema changes
         RAISE NOTICE 'Notice: auth.users sync skipped: %', SQLERRM;
     END;
-    RETURN NEW;
+    RETURN COALESCE(NEW, OLD);
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 DROP TRIGGER IF EXISTS trigger_sync_user_to_auth ON public.users;
 CREATE TRIGGER trigger_sync_user_to_auth
-AFTER INSERT OR UPDATE ON public.users
+AFTER INSERT OR UPDATE OR DELETE ON public.users
 FOR EACH ROW
 EXECUTE FUNCTION public.sync_texsetu_user_to_auth();
