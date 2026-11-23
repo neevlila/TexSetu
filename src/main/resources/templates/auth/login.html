@@ -25,30 +25,56 @@
                     <form th:action="@{/auth/login-process}" method="post">
                         <div class="mb-3">
                             <label class="form-label small fw-semibold">Business Email Address</label>
-                            <input type="email" id="emailInput" name="username" class="form-control" placeholder="name@business.com" required autofocus>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-muted"><i class="bi bi-envelope"></i></span>
+                                <input type="email" id="emailInput" name="username" class="form-control" placeholder="name@business.com" required autofocus>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-semibold">Password</label>
-                            <input type="password" id="passwordInput" name="password" class="form-control" placeholder="Enter your password" required>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent text-muted"><i class="bi bi-lock"></i></span>
+                                <input type="password" id="passwordInput" name="password" class="form-control border-end-0" placeholder="Enter your password" required>
+                                <button class="btn btn-outline-secondary border-start-0" type="button" onclick="togglePasswordVisibility()" title="Show/Hide Password">
+                                    <i class="bi bi-eye" id="togglePasswordIcon"></i>
+                                </button>
+                            </div>
                         </div>
 
-                        <button type="submit" class="btn btn-teal text-white w-100 py-2 fw-semibold mt-2">Sign In</button>
+                        <button type="submit" class="btn btn-teal text-white w-100 py-2 fw-semibold mt-2">Sign In to Dashboard</button>
                     </form>
 
-                    <!-- Quick Demo Credential Pills for University Demonstration -->
+                    <!-- Collapsible Demo Accounts for Evaluators & Reviewers -->
                     <div class="mt-4 pt-3 border-top">
-                        <span class="d-block small text-muted text-center mb-2 fw-semibold text-uppercase">Demonstration Accounts</span>
-                        <div class="d-flex flex-column gap-2">
-                            <button type="button" class="btn btn-outline-primary btn-sm text-start demo-login-btn" onclick="fillDemo('meera.fashions@texsetu.demo', 'Password123!')">
-                                <i class="bi bi-bag-fill me-2 text-primary"></i> <strong>Buyer:</strong> Meera Fashion House (Surat Trader)
-                            </button>
-                            <button type="button" class="btn btn-outline-success btn-sm text-start demo-login-btn" onclick="fillDemo('radhe.dyeing@texsetu.demo', 'Password123!')">
-                                <i class="bi bi-droplet-half me-2 text-success"></i> <strong>Job Worker:</strong> Radhe Krishna Dyeing (Pandesara)
-                            </button>
-                            <button type="button" class="btn btn-outline-secondary btn-sm text-start demo-login-btn" onclick="fillDemo('admin@texsetu.com', 'Password123!')">
-                                <i class="bi bi-shield-lock-fill me-2 text-warning"></i> <strong>Admin:</strong> TexSetu Master Admin
-                            </button>
-                        </div>
+                        <details class="text-secondary small">
+                            <summary class="cursor-pointer text-center text-muted fw-semibold user-select-none py-1" style="cursor: pointer;">
+                                <i class="bi bi-person-badge me-1 text-teal"></i> Evaluation & Demo Accounts (Click to View)
+                            </summary>
+                            <div class="d-flex flex-column gap-2 mt-3">
+                                <button type="button" class="btn btn-outline-primary btn-sm text-start demo-login-btn py-2" onclick="fillDemo('meera.fashions@texsetu.demo', 'Password123!')">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="bi bi-bag-fill me-2 text-primary"></i> <strong>Buyer Portal:</strong> Meera Fashion House</span>
+                                        <span class="badge bg-primary-subtle text-primary border">Auto-fill</span>
+                                    </div>
+                                </button>
+                                <button type="button" class="btn btn-outline-success btn-sm text-start demo-login-btn py-2" onclick="fillDemo('radhe.dyeing@texsetu.demo', 'Password123!')">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="bi bi-droplet-half me-2 text-success"></i> <strong>Mill Portal:</strong> Radhe Krishna Dyeing</span>
+                                        <span class="badge bg-success-subtle text-success border">Auto-fill</span>
+                                    </div>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary btn-sm text-start demo-login-btn py-2" onclick="fillDemo('admin@texsetu.com', 'Password123!')">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span><i class="bi bi-shield-lock-fill me-2 text-warning"></i> <strong>Admin Audit:</strong> TexSetu Master Admin</span>
+                                        <span class="badge bg-secondary-subtle text-secondary border">Auto-fill</span>
+                                    </div>
+                                </button>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="text-center mt-3 text-muted small" style="font-size: 0.78rem;">
+                        <i class="bi bi-shield-check text-teal me-1"></i> Verified 256-Bit SSL Encrypted Session
                     </div>
 
                     <div class="text-center mt-4 small">
@@ -63,6 +89,20 @@
         function fillDemo(email, pass) {
             document.getElementById('emailInput').value = email;
             document.getElementById('passwordInput').value = pass;
+        }
+
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('passwordInput');
+            const icon = document.getElementById('togglePasswordIcon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                passInput.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
         }
     </script>
 

@@ -51,10 +51,13 @@ public class AuthController {
 
         try {
             userService.registerUser(dto);
-            redirectAttributes.addFlashAttribute("successMessage", "Registration successful! You can now log in to your account.");
+            redirectAttributes.addFlashAttribute("successMessage", "Registration successful! You can now log in to your account with your credentials.");
             return "redirect:/auth/login";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
+            return "auth/register";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Registration failed: " + (e.getMessage() != null ? e.getMessage() : "Please verify your input and try again."));
             return "auth/register";
         }
     }
