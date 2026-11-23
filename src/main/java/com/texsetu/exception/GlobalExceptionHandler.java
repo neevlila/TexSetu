@@ -28,11 +28,11 @@ public class GlobalExceptionHandler {
         return "error/custom-error";
     }
 
-    @ExceptionHandler(SecurityException.class)
-    public String handleSecurityException(SecurityException ex, Model model) {
+    @ExceptionHandler({SecurityException.class, org.springframework.security.access.AccessDeniedException.class})
+    public String handleSecurityException(Exception ex, Model model) {
         log.warn("Security violation: {}", ex.getMessage());
         model.addAttribute("errorTitle", "Access Denied");
-        model.addAttribute("errorMessage", ex.getMessage());
+        model.addAttribute("errorMessage", ex.getMessage() != null ? ex.getMessage() : "Access denied.");
         return "error/403";
     }
 
