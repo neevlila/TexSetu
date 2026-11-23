@@ -48,14 +48,7 @@ public class JobWorkerDashboardController {
     private JobWorkerProfile getAuthenticatedWorker(UserDetails userDetails) {
         User user = userService.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new IllegalStateException("User not found."));
-        return jobWorkerService.getProfileByUserId(user.getId())
-                .orElseGet(() -> {
-                    List<JobWorkerProfile> existing = jobWorkerService.getAllWorkers();
-                    if (!existing.isEmpty()) {
-                        return existing.get(0);
-                    }
-                    throw new IllegalStateException("Job worker profile not found.");
-                });
+        return jobWorkerService.getOrCreateProfileForUser(user);
     }
 
     @GetMapping("/dashboard")

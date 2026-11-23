@@ -38,6 +38,28 @@ html, body {
     background-color: var(--teal-primary) !important;
 }
 
+.bg-teal-subtle,
+.bg-teal.bg-opacity-10 {
+    background-color: rgba(15, 118, 110, 0.12) !important;
+}
+
+.bg-teal.bg-opacity-25 {
+    background-color: rgba(15, 118, 110, 0.25) !important;
+}
+
+.bg-teal.bg-opacity-50 {
+    background-color: rgba(15, 118, 110, 0.50) !important;
+}
+
+.border-teal {
+    border-color: var(--teal-primary) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #2dd4bf !important;
+    font-weight: 600;
+}
+
 .btn-teal {
     background-color: var(--teal-primary);
     border-color: var(--teal-primary);
@@ -522,6 +544,12 @@ select:focus, .form-select:focus, input:focus, .form-control:focus {
 [data-bs-theme="dark"] .metric-card {
     background-color: #1e293b !important;
     border-color: #334155 !important;
+}
+
+[data-bs-theme="dark"] .bg-teal.bg-opacity-10,
+[data-bs-theme="dark"] .bg-teal-subtle {
+    background-color: rgba(45, 212, 191, 0.18) !important;
+    color: #2dd4bf !important;
 }
 
 [data-bs-theme="dark"] .text-navy {

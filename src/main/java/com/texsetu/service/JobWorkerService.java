@@ -4,6 +4,7 @@ import com.texsetu.entity.JobWorkerProfile;
 import com.texsetu.entity.User;
 import com.texsetu.entity.enums.OrderStatus;
 import com.texsetu.entity.enums.QuotationStatus;
+import com.texsetu.entity.enums.Role;
 import com.texsetu.entity.enums.VerificationStatus;
 import com.texsetu.repository.JobOrderRepository;
 import com.texsetu.repository.JobWorkerProfileRepository;
@@ -54,6 +55,30 @@ public class JobWorkerService {
     @Transactional(readOnly = true)
     public List<JobWorkerProfile> getAllWorkers() {
         return jobWorkerProfileRepository.findAll();
+    }
+
+    @Transactional
+    public JobWorkerProfile getOrCreateProfileForUser(User user) {
+        return jobWorkerProfileRepository.findByUserId(user.getId())
+                .orElseGet(() -> {
+                    List<JobWorkerProfile> existing = jobWorkerProfileRepository.findAll();
+                    if (!existing.isEmpty()) {
+                        return existing.get(0);
+                    }
+                    JobWorkerProfile profile = new JobWorkerProfile();
+                    profile.setUser(user);
+                    profile.setBusinessName(user.getRole() == Role.ADMIN ? "TexSetu Master Processing Mill" : (user.getFullName() + " Processing Unit"));
+                    profile.setBusinessType("Fabric Dyeing & Printing Mill");
+                    profile.setAddress("Pandesara GIDC, Surat");
+                    profile.setCity("Surat");
+                    profile.setServiceArea("Surat & South Gujarat");
+                    profile.setIndicativeCapacityMetersPerDay(BigDecimal.valueOf(25000.0));
+                    profile.setTurnaroundDays(3);
+                    profile.setVerificationStatus(VerificationStatus.VERIFIED);
+                    profile.setVerificationNotes("Operating processing unit");
+                    profile.setCapacityLastUpdated(LocalDateTime.now());
+                    return jobWorkerProfileRepository.save(profile);
+                });
     }
 
     @Transactional(readOnly = true)

@@ -202,6 +202,15 @@
                         updateThemeUI(nextTheme);
                     });
                 }
+
+                // Highlight active navigation links based on current path
+                const currentPath = window.location.pathname;
+                document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
+                    const href = link.getAttribute('href');
+                    if (href && (href === currentPath || (href.length > 2 && currentPath.startsWith(href)))) {
+                        link.classList.add('active');
+                    }
+                });
             });
         </script>
     </footer>
